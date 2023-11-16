@@ -6,9 +6,11 @@
 /*   By: amatta <amatta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 14:15:47 by vd-ambro          #+#    #+#             */
-/*   Updated: 2023/11/16 10:44:22 by amatta           ###   ########.fr       */
+/*   Updated: 2023/11/16 11:52:50 by amatta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 
 int	g_var;
 
@@ -51,7 +53,7 @@ void	signal_handler(int sig)
 	}
 }
 
-int	main(void)
+int	main( void)
 {
 	t_shell	shell;
 
