@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vd-ambro <vd-ambro@student.42roma.it>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/26 14:20:45 by vd-ambro          #+#    #+#             */
-/*   Updated: 2023/10/26 16:49:57 by vd-ambro         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include <stdio.h>
@@ -24,5 +12,19 @@
 # include <readline/history.h>
 # include <signal.h>
 # include "../libft/libft.h"
+
+extern int	g_var;
+
+typedef struct s_shell {
+	char	*command;
+	char	*prompt;
+}	t_shell;
+
+/* minishell.c */
+void	init_shell(t_shell *shell);
+void	run_shell(t_shell *shell);
+void	clean_shell(t_shell *shell);
+/*signal*/
+void	signal_handler(int sig);
 
 #endif
