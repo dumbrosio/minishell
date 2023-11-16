@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amatta <amatta@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/26 14:20:45 by vd-ambro          #+#    #+#             */
+/*   Updated: 2023/11/16 10:45:24 by amatta           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include <stdio.h>
@@ -13,7 +25,7 @@
 # include <signal.h>
 # include "../libft/libft.h"
 
-extern int g_var;
+extern int	g_var;
 
 typedef struct s_shell {
 	char	*command;

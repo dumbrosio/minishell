@@ -1,6 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amatta <amatta@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/26 14:15:47 by vd-ambro          #+#    #+#             */
+/*   Updated: 2023/11/16 10:44:22 by amatta           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int g_var;
+int	g_var;
 
 void	init_shell(t_shell *shell)
 {
@@ -14,17 +24,15 @@ void	run_shell(t_shell *shell)
 		shell->command = readline(shell->prompt);
 		if (!shell->command)
 			break ;
-
 		if (ft_strlen(shell->command) == 0)
 		{
 			free(shell);
 			continue ;
 		}
-			add_history(shell->command);
+		add_history(shell->command);
 	}
 	free(shell->command);
 }
-
 
 void	clean_shell(t_shell *shell)
 {
