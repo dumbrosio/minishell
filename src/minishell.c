@@ -2,27 +2,6 @@
 
 int			g_var;
 
-char	*ft_strncpy(char *dest, const char *src, size_t n)
-{
-	size_t	i;
-	char	*runner;
-
-	i = 0;
-	runner = dest;
-	while (*src && i < n)
-	{
-		*runner++ = *src++;
-		i++;
-	}
-	*runner = '\0';
-	while (i < n)
-	{
-		*runner++ = '\0';
-		i++;
-	}
-	return (dest);
-}
-
 static char	*create_abs_path(char *path, char *cmd)
 {
 	int		path_len;
@@ -76,25 +55,6 @@ char	*get_abs_path(char *cmd)
 	free_path(path);
 	return (ft_strdup(cmd));
 }
-
-// char	**dup_env(char **env)
-// {
-// 	char	**env_dup;
-// 	int		i;
-
-// 	i = 0;
-// 	while (env[i])
-// 		i++;
-// 	env_dup = (char **)malloc(sizeof(char *) * (i + 1));
-// 	i = 0;
-// 	while (env[i])
-// 	{
-// 		env_dup[i] = ft_strdup(env[i]);
-// 		i++;
-// 	}
-// 	env_dup[i] = NULL;
-// 	return (env_dup);
-// }
 
 void	init_shell(t_shell *shell, char **envp)
 {

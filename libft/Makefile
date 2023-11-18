@@ -42,7 +42,8 @@ SRCS = ft_atoi.c \
 	   ft_lstlast.c \
 	   ft_lstmap.c \
 	   ft_lstnew.c \
-	   ft_lstsize.c
+	   ft_lstsize.c \
+	   ft_strncpy.c
 
 OBJS = $(SRCS:.c=.o)
 
