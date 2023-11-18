@@ -17,7 +17,10 @@ extern int	g_var;
 
 typedef struct s_shell
 {
-	char	*command;
+	char	**args;
+	char	**envp;
+	char	*cmd;
+	char	*path_cmd;
 	char	*prompt;
 }			t_shell;
 
@@ -36,10 +39,14 @@ typedef enum e_token
 }			t_token;
 
 /* minishell.c */
-void		init_shell(t_shell *shell);
-void		run_shell(t_shell *shell);
 void		clean_shell(t_shell *shell);
-/*signal*/
+void		init_shell(t_shell *shell, char **envp);
+void		run_shell(t_shell *shell);
+
+/*path*/
+char		*get_abs_path(char *cmd);
+
+/*signals*/
 void		signal_handler(int sig);
 
 #endif
