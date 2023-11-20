@@ -7,10 +7,10 @@ RM			:= rm -f
 LIBFT_NAME	:= libft.a
 LIBFT_DIR	:= ./libft/
 LIBFT		:= $(addprefix $(LIBFT_DIR), $(LIBFT_NAME))
-SRC_FILES	:= minishell
+SRC_FILES	:= minishell parser parser_utils path utils debug
 SRC_DIR		:= ./src/
-SRCS		:= $(addsuffix .c, $(addprefix $(SRC_DIR), $(SRC_FILES))) 
-OBJ_DIR		:= ./.obj/
+SRCS		:= $(addsuffix .c, $(addprefix $(SRC_DIR), $(SRC_FILES)))
+OBJ_DIR		:= ./obj/
 OBJS		:= $(addsuffix .o, $(addprefix $(OBJ_DIR), $(SRC_FILES)))
 LIBRARIES	:= -L./libft -lft -lpthread -lreadline
 DEBUG		:= -g
@@ -29,8 +29,7 @@ $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(INCLUDES) $(LIBRARIES) $(DEBUG)
 	@echo "$(ERASE)$(GREEN)$(NAME) made$(END)"
 
-$(OBJS): $(SRCS)
-	mkdir -p $(OBJ_DIR)
+$(OBJ_DIR)%o: $(SRC_DIR)%c
 	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES) $(LIBRARIES) $(DEBUG)
 	@echo "$(ERASE)$(BLUE)> Compilation :$(END) $<"
 
