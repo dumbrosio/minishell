@@ -30,6 +30,7 @@ $(NAME): $(OBJS) $(LIBFT)
 	@echo "$(ERASE)$(GREEN)$(NAME) made$(END)"
 
 $(OBJ_DIR)%o: $(SRC_DIR)%c
+	mkdir -p obj/
 	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES) $(LIBRARIES) $(DEBUG)
 	@echo "$(ERASE)$(BLUE)> Compilation :$(END) $<"
 
