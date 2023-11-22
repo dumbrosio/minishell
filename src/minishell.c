@@ -1,65 +1,16 @@
 #include "minishell.h"
 
-int			g_var;
-
-static char	*create_abs_path(char *path, char *cmd)
-{
-	int		path_len;
-	int		cmd_len;
-	char	*abs;
-
-	path_len = ft_strlen(path);
-	cmd_len = ft_strlen(cmd);
-	abs = (char *)malloc(sizeof(char) * (cmd_len + path_len + 2));
-	ft_strncpy(abs, path, path_len);
-	ft_strncpy(abs + path_len, "/", 1);
-	ft_strncpy(abs + path_len + 1, cmd, cmd_len);
-	ft_strncpy(abs + path_len + cmd_len + 1, "\0", 1);
-	return (abs);
-}
-
-static void	free_path(char **path)
-{
-	char	**runner;
-
-	runner = path;
-	while (*runner)
-		free(*runner++);
-	free(path);
-}
-
-char	*get_abs_path(char *cmd)
-{
-	char	*abs;
-	char	**path;
-	char	**runner;
-
-	path = ft_split(getenv("PATH"), ':');
-	if (path == NULL)
-		return (ft_strdup(cmd));
-	runner = path;
-	while (*runner)
-	{
-		abs = create_abs_path(*runner, cmd);
-		if (access(abs, X_OK) == 0)
-		{
-			free_path(path);
-			return (abs);
-		}
-		free(abs);
-		abs = NULL;
-		runner++;
-	}
-	if (abs)
-		free(abs);
-	free_path(path);
-	return (ft_strdup(cmd));
-}
+int		g_var;
 
 void	init_shell(t_shell *shell, char **envp)
 {
 	shell->prompt = ft_strdup("minishell$ ");
-	shell->envp = envp;
+	shell->envp = copy_environment(envp);
+	shell->buffer = malloc(sizeof(char) * BUFFERSIZE);
+	shell->command_pos = 0;
+	shell->stdin_fd = STDIN_FILENO;
+	shell->stdout_fd = STDOUT_FILENO;
+	shell->stderr_fd = STDERR_FILENO;
 }
 
 static void	free_cmds(t_shell *shell)
@@ -109,6 +60,7 @@ void	run_shell(t_shell *shell)
 void	clean_shell(t_shell *shell)
 {
 	free(shell->prompt);
+	free(shell->buffer);
 }
 
 void	signal_handler(int sig)
@@ -128,8 +80,20 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	shell;
 
 	if (argc > 1)
-		return (0);
-	(void)argv;
+		{
+			if (ft_strncmp(argv[1], "parser", 6) == 0)
+			{
+				init_shell(&shell, envp);
+				test_parser(&shell);
+				return (0);
+			}
+			else
+			{
+				printf("Usage:\n./minishell: Run minishell\n");
+				printf("./minishell parser: Test parser\n");
+				return (1);
+			}
+		}
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, signal_handler);
 	init_shell(&shell, envp);

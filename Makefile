@@ -3,13 +3,15 @@ NAME		:= minishell
 CC			:= gcc
 CFLAGS		:= -Wall -Wextra -Werror
 INCLUDES	:= -I./includes/
+MKDIR		:= mkdir -p
 RM			:= rm -f
+RMDIR		:= rm -rf
 LIBFT_NAME	:= libft.a
 LIBFT_DIR	:= ./libft/
 LIBFT		:= $(addprefix $(LIBFT_DIR), $(LIBFT_NAME))
-SRC_FILES	:= minishell
+SRC_FILES	:= minishell parser parser_utils path utils debug
 SRC_DIR		:= ./src/
-SRCS		:= $(addsuffix .c, $(addprefix $(SRC_DIR), $(SRC_FILES))) 
+SRCS		:= $(addsuffix .c, $(addprefix $(SRC_DIR), $(SRC_FILES)))
 OBJ_DIR		:= ./.obj/
 OBJS		:= $(addsuffix .o, $(addprefix $(OBJ_DIR), $(SRC_FILES)))
 LIBRARIES	:= -L./libft -lft -lpthread -lreadline
@@ -29,8 +31,8 @@ $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(INCLUDES) $(LIBRARIES) $(DEBUG)
 	@echo "$(ERASE)$(GREEN)$(NAME) made$(END)"
 
-$(OBJS): $(SRCS)
-	mkdir -p $(OBJ_DIR)
+$(OBJ_DIR)%o: $(SRC_DIR)%c
+	$(MKDIR) $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES) $(LIBRARIES) $(DEBUG)
 	@echo "$(ERASE)$(BLUE)> Compilation :$(END) $<"
 
@@ -44,7 +46,8 @@ clean:
 
 fclean: clean
 	$(MAKE) -C $(LIBFT_DIR) fclean
-	$(RM) $(NAME)
+	$(RM) $(NAME) 
+	$(RMDIR) $(OBJ_DIR)
 	@echo "$(YELLOW)$(NAME) removed$(END)"
 
 re: fclean all
