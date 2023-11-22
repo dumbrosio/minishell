@@ -27,6 +27,8 @@ void	choose_method(t_shell *shell, t_pstatus *state, t_token *token, int c)
 		parse_neutral(shell, state, token, c);
 	else if (*state == P_DGREAT)
 		parse_dgreat(shell, token, c);
+	else if (*state == P_DLESS)
+		parse_dless(shell, token, c);
 	else if (*state == P_QUOTE)
 		parse_quote(shell, token, c);
 	else if (*state == P_INWORD)

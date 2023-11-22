@@ -51,6 +51,7 @@ typedef enum e_pstatus
 {
 	P_NEUTRAL,
 	P_DGREAT,
+	P_DLESS,
 	P_QUOTE,
 	P_INWORD
 }	t_pstatus;
@@ -74,6 +75,7 @@ int		ft_getchar(t_shell *shell);
 void	store_char(t_shell *shell, int c);
 void	choose_method(t_shell *shell, t_pstatus *state, t_token *token, int c);
 void	parse_dgreat(t_shell *shell, t_token *token, int c);
+void	parse_dless(t_shell *shell, t_token *token, int c);
 void	parse_neutral(t_shell *shell, t_pstatus *state, t_token *token, int c);
 void	parse_quote(t_shell *shell, t_token *token, int c);
 void	parse_inword(t_shell *shell, t_token *token, int c);

@@ -8,8 +8,10 @@ void	parse_neutral(t_shell *shell, t_pstatus *state, t_token *token, int c)
 		*token = T_NL;
 	else if (c == ' ' || c == '\t')
 		return ;
-	else if (c == '>' || c == '<')
+	else if (c == '>')
 		*state = P_DGREAT;
+	else if (c == '<')
+		*state = P_DLESS;
 	else if (c == '"' || c == '\'')
 		*state = P_QUOTE;
 	else
@@ -20,7 +22,7 @@ void	parse_neutral(t_shell *shell, t_pstatus *state, t_token *token, int c)
 }
 
 void	parse_dgreat(t_shell *shell, t_token *token, int c)
-{	
+{
 	if (c == '>' && shell->command[shell->command_pos - 2] == '>')
 		*token = T_DGREAT;
 	else if (shell->command[shell->command_pos - 2] == '>')
@@ -29,9 +31,13 @@ void	parse_dgreat(t_shell *shell, t_token *token, int c)
 		//ungetc(c, stdin);
 		shell->command_pos--;
 	}
-	else if (c == '<' && shell->command[shell->command_pos - 2] == '<')
+}
+
+void	parse_dless(t_shell *shell, t_token *token, int c)
+{
+	if (c == '<' && shell->command[shell->command_pos - 2] == '<')
 		*token = T_DLESS;
-	else
+	else if (shell->command[shell->command_pos - 2] == '<')
 	{
 		*token = T_LESS;
 		//ungetc(c, stdin);
