@@ -9,7 +9,7 @@ int	is_terminal_token(t_token token)
 
 void	redirect(t_command *cmd)
 {
-	// if (cmd->srcfd == STDIN_FILENO) // 2 param && bckgrnd)
+	// if (cmd->srcfd == STDIN_FILENO))
 	// {
 	// 	ft_strcpy(cmd->srcfile, "/dev/null");
 	// 	cmd->srcfd = -1;
