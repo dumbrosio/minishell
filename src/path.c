@@ -51,5 +51,5 @@ char	*get_abs_path(char *cmd)
 	if (abs)
 		free(abs);
 	free_path(path);
-	return (ft_strdup(cmd));
+	return (cmd); /* tolto ft_strdup(cmd) creava leak*/
 }

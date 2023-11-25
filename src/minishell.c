@@ -8,52 +8,37 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->envp = copy_environment(envp);
 	shell->buffer = malloc(sizeof(char) * BUFFERSIZE);
 	shell->command_pos = 0;
-	shell->stdin_fd = STDIN_FILENO;
-	shell->stdout_fd = STDOUT_FILENO;
-	shell->stderr_fd = STDERR_FILENO;
-}
-
-static void	free_cmds(t_shell *shell)
-{
-	int	i;
-
-	free(shell->cmd);
-	i = 0;
-	while (shell->args[i])
-		free(shell->args[i++]);
-	free(shell->args);
-	free(shell->path_cmd);
-	shell->cmd = NULL;
-	shell->args = NULL;
-	shell->path_cmd = NULL;
+	shell->main_pid = getpid();
+	shell->exit_code = 0;
+	shell->localenvp = (char **)malloc(sizeof(char *));
+	shell->localenvp[0] = NULL;
 }
 
 void	run_shell(t_shell *shell)
 {
 	pid_t	pid;
+	t_token	term;
 
-	while (1)
+	term = T_NL;
+	shell->command = readline(shell->prompt);
+	while (shell->command)
 	{
-		shell->cmd = readline(shell->prompt);
-		if (!shell->cmd)
-			break ;
-		if (ft_strlen(shell->cmd) == 0)
+		if (term == T_NL)
 		{
-			free(shell->cmd);
-			continue ;
+			shell->command_pos = 0;
+			if (ft_strlen(shell->command))
+				add_history(shell->command);
 		}
-		shell->args = ft_split(shell->cmd, ' ');
-		shell->path_cmd = get_abs_path(shell->args[0]);
-		add_history(shell->cmd);
-		pid = fork();
-		if (!pid)
+		term = command(shell, &pid, 0, NULL);
+		if (term == T_ERROR)
 		{
-			execve(shell->path_cmd, shell->args, shell->envp);
-			perror(shell->path_cmd);
-			exit(1);
+			print_error("Bad command");
+			term = T_NL;
 		}
-		wait(NULL);
-		free_cmds(shell);
+		else if (pid > 0)
+			wait_command(shell, pid);
+		free(shell->command);
+		shell->command = readline(shell->prompt);
 	}
 }
 
@@ -61,6 +46,8 @@ void	clean_shell(t_shell *shell)
 {
 	free(shell->prompt);
 	free(shell->buffer);
+	ft_split_clean(shell->envp);
+	ft_split_clean(shell->localenvp);
 }
 
 void	signal_handler(int sig)
