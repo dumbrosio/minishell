@@ -39,24 +39,3 @@ void	ft_split_clean(char **split)
 		free(split[i++]);
 	free(split);
 }
-
-char	*ft_strcpy(char *dest, const char *src)
-{
-	char	*runner;
-
-	runner = dest;
-	while (*src)
-		*runner++ = *src++;
-	*runner = '\0';
-	return (dest);
-}
-
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	while (*s1 && *s2 && *s1 == *s2)
-	{
-		s1++;
-		s2++;
-	}
-	return ((unsigned char) *s1 - (unsigned char) *s2);
-}
