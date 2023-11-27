@@ -26,13 +26,13 @@ void	free_path(char **path)
 	free(path);
 }
 
-char	*get_abs_path(char *cmd)
+char	*get_abs_path(t_shell *shell, char *cmd)
 {
 	char	*abs;
 	char	**path;
 	char	**runner;
 
-	path = ft_split(getenv("PATH"), ':');
+	path = ft_split(ft_getenv(shell, "PATH"), ':');
 	if (path == NULL)
 		return (ft_strdup(cmd));
 	runner = path;

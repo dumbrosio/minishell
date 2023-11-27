@@ -86,7 +86,7 @@ void	run_shell(t_shell *shell);
 /*path*/
 char	*create_abs_path(char *path, char *cmd);
 void	free_path(char **path);
-char	*get_abs_path(char *cmd);
+char	*get_abs_path(t_shell *shell, char *cmd);
 
 /*signals*/
 void	signal_handler(int sig);
@@ -130,6 +130,9 @@ void	set_exit_status(t_shell *shell, int status);
 pid_t	invoke(t_shell *shell, t_command *cmd);
 void	invoke_child(t_shell *shell, t_command *cmd);
 
+/* env */
+char	*ft_getenv(t_shell *shell, char *key);
+char	**get_env_entry(char **env, char *key);
 
 /*utils*/
 void	print_error(char *str);
