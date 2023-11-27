@@ -22,7 +22,7 @@ char	**copy_environment(char **env)
 	return (environment);
 }
 
-void	print_error( char *str)
+void	print_error(char *str)
 {
 	write(STDERR_FILENO, str, ft_strlen(str));
 	write(STDERR_FILENO, "\n", 1);
