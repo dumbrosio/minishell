@@ -9,7 +9,7 @@ RMDIR		:= rm -rf
 LIBFT_NAME	:= libft.a
 LIBFT_DIR	:= ./libft/
 LIBFT		:= $(addprefix $(LIBFT_DIR), $(LIBFT_NAME))
-SRC_FILES	:= minishell parser parser_utils path utils debug
+SRC_FILES	:= minishell parser parser_utils path utils debug executor executor_utils1 executor_utils2  executor_utils3
 SRC_DIR		:= ./src/
 SRCS		:= $(addsuffix .c, $(addprefix $(SRC_DIR), $(SRC_FILES)))
 OBJ_DIR		:= ./.obj/
@@ -46,7 +46,7 @@ clean:
 
 fclean: clean
 	$(MAKE) -C $(LIBFT_DIR) fclean
-	$(RM) $(NAME) 
+	$(RM) $(NAME)
 	$(RMDIR) $(OBJ_DIR)
 	@echo "$(YELLOW)$(NAME) removed$(END)"
 

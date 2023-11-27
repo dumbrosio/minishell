@@ -15,7 +15,7 @@ void	store_char(t_shell *shell, int c)
 {
 	if (shell->buffer_pos >= BUFFERSIZE)
 	{
-		printf("Error\n");
+		print_error("Error\n");
 		exit(1);
 	}
 	shell->buffer[(shell->buffer_pos)++] = c;
