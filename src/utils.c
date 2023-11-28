@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	**copy_environment(char **env)
+char	**copy_env(char **env)
 {
 	char	**environment;
 	int		i;
@@ -13,7 +13,7 @@ char	**copy_environment(char **env)
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "SHELL", 5) == 0)
-			environment[i] = ft_strdup("SHELL=./minishell");
+			environment[i] = ft_strdup("SHELL=./mini");
 		else
 			environment[i] = ft_strdup(env[i]);
 		i++;
@@ -28,7 +28,7 @@ void	print_error(char *str)
 	write(STDERR_FILENO, "\n", 1);
 }
 
-void	ft_split_clean(char **split)
+void	ft_clean(char **split)
 {
 	int	i;
 
@@ -38,4 +38,20 @@ void	ft_split_clean(char **split)
 	while (split[i])
 		free(split[i++]);
 	free(split);
+}
+
+int	is_space(int c)
+{
+	return (c == 32 || c == 9 || c == 10);
+}
+
+int	is_empty_str(char *str)
+{
+	while (*str)
+	{
+		if (is_space(*str))
+			return (1);
+		str++;
+	}
+	return (0);
 }

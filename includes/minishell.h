@@ -136,9 +136,9 @@ char	**get_env_entry(char **env, char *key);
 
 /*utils*/
 void	print_error(char *str);
-char	**copy_environment(char **env);
-void	ft_split_clean(char **split);
-char	*ft_strcpy(char *dest, const char *src);
-int		ft_strcmp(const char *s1, const char *s2);
+char	**copy_env(char **env);
+void	ft_clean(char **split);
+int		is_space(int c);
+int		is_empty_str(char *str);
 
 #endif

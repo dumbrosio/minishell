@@ -4,8 +4,8 @@ int		g_var;
 
 void	init_shell(t_shell *shell, char **envp)
 {
-	shell->prompt = ft_strdup("minishell$ ");
-	shell->envp = copy_environment(envp);
+	shell->prompt = ft_strdup("mini$ ");
+	shell->envp = copy_env(envp);
 	shell->buffer = malloc(sizeof(char) * BUFFERSIZE);
 	shell->command_pos = 0;
 	shell->main_pid = getpid();
@@ -26,7 +26,7 @@ void	run_shell(t_shell *shell)
 		if (term == T_NL)
 		{
 			shell->command_pos = 0;
-			if (ft_strlen(shell->command))
+			if (ft_strlen(shell->command) && !is_empty_str(shell->command))
 				add_history(shell->command);
 		}
 		term = command(shell, &pid, 0, NULL);
@@ -46,8 +46,8 @@ void	clean_shell(t_shell *shell)
 {
 	free(shell->prompt);
 	free(shell->buffer);
-	ft_split_clean(shell->envp);
-	ft_split_clean(shell->localenvp);
+	ft_clean(shell->envp);
+	ft_clean(shell->localenvp);
 }
 
 void	signal_handler(int sig)

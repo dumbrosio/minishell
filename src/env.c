@@ -23,10 +23,10 @@ char	**get_env_entry(char **env, char *key)
 		split_entry = ft_split(env[i], '=');
 		if (ft_strcmp(split_entry[0], key) == 0)
 		{
-			ft_split_clean(split_entry);
+			ft_clean(split_entry);
 			return (&env[i]);
 		}
-		ft_split_clean(split_entry);
+		ft_clean(split_entry);
 		i++;
 	}
 	return (&env[i]);
