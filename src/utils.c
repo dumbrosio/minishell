@@ -2,24 +2,24 @@
 
 char	**copy_env(char **env)
 {
-	char	**environment;
+	char	**environ;
 	int		i;
 
 	i = 0;
 	while (env[i])
 		i++;
-	environment = (char **)malloc(sizeof(char *) * (i + 1));
+	environ = (char **)malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "SHELL", 5) == 0)
-			environment[i] = ft_strdup("SHELL=./mini");
+			environ[i] = ft_strdup("SHELL=./mini");
 		else
-			environment[i] = ft_strdup(env[i]);
+			environ[i] = ft_strdup(env[i]);
 		i++;
 	}
-	environment[i] = NULL;
-	return (environment);
+	environ[i] = NULL;
+	return (environ);
 }
 
 void	print_error(char *str)
@@ -49,7 +49,7 @@ int	is_empty_str(char *str)
 {
 	while (*str)
 	{
-		if (is_space(*str))
+		if (!is_space((unsigned char)*str))
 			return (1);
 		str++;
 	}

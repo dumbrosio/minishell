@@ -79,9 +79,9 @@ typedef struct s_command
 }	t_command;
 
 /* minishell.c */
-void	clean_shell(t_shell *shell);
-void	init_shell(t_shell *shell, char **envp);
-void	run_shell(t_shell *shell);
+void	init_sh(t_shell *shell, char **envp);
+void	run_sh(t_shell *shell);
+void	clean_sh(t_shell *shell);
 
 /*path*/
 char	*create_abs_path(char *path, char *cmd);
