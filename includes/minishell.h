@@ -109,6 +109,10 @@ t_token	get_token(t_shell *shell);
 t_token	command(t_shell *shell, pid_t *wpid, int makepipe, int *pipefdp);
 int		cmd_special(t_shell *shell, t_command *cmd);
 
+/* builtin */
+int		is_builtin(t_command *cmd);
+int 	exec_builtin(t_shell *shell, t_command *cmd);
+
 /* executor utils 1*/
 void	init_command(t_command *cmd, pid_t *wpid, int makepipe, int *pipefdp);
 void	add_word(t_shell *shell, t_command *cmd);

@@ -77,6 +77,8 @@ void	invoke_child(t_shell *shell, t_command *cmd)
 	if (cmd->pfd[1] != -1)
 		close(cmd->pfd[1]);
 	redirect(cmd);
+	if (is_builtin(cmd))
+		_exit(exec_builtin(shell, cmd));
 	execve(get_abs_path(shell, cmd->argv[0]), cmd->argv, shell->envp);
 	perror(cmd->argv[0]);
 	_exit(EXIT_FAILURE);
