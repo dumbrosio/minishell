@@ -60,7 +60,7 @@ int	set_redirect_in(t_shell *shell, t_command *cmd)
 		print_error("Extra <");
 		return (1);
 	}
-	if (gettoken(shell) != T_WORD)
+	if (get_token(shell) != T_WORD)
 	{
 		print_error("Illegal <");
 		return (1);
@@ -77,7 +77,7 @@ int	set_redirect_out(t_shell *shell, t_command *cmd)
 		print_error("Extra > or >>");
 		return (1);
 	}
-	if (gettoken(shell) != T_WORD)
+	if (get_token(shell) != T_WORD)
 	{
 		print_error("Illegal > or >>");
 		return (1);

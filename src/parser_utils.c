@@ -21,7 +21,7 @@ void	store_char(t_shell *shell, int c)
 	shell->buffer[(shell->buffer_pos)++] = c;
 }
 
-void	choose_method(t_shell *shell, t_pstatus *state, t_token *token, int c)
+void	choose_state(t_shell *shell, t_pstatus *state, t_token *token, int c)
 {
 	if (*state == P_NEUTRAL)
 		parse_neutral(shell, state, token, c);
@@ -33,4 +33,25 @@ void	choose_method(t_shell *shell, t_pstatus *state, t_token *token, int c)
 		parse_quote(shell, token, c);
 	else if (*state == P_INWORD)
 		parse_inword(shell, token, c);
+}
+
+void	parse_neutral(t_shell *shell, t_pstatus *state, t_token *token, int c)
+{
+	if (c == '|')
+		*token = T_PIPE;
+	else if (c == '\n')
+		*token = T_NL;
+	else if (c == ' ' || c == '\t')
+		return ;
+	else if (c == '>')
+		*state = P_DGREAT;
+	else if (c == '<')
+		*state = P_DLESS;
+	else if (c == '"' || c == '\'')
+		*state = P_QUOTE;
+	else
+	{
+		*state = P_INWORD;
+		store_char(shell, c);
+	}
 }
