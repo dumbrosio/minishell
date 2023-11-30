@@ -112,6 +112,7 @@ int		cmd_special(t_shell *shell, t_command *cmd);
 /* builtin */
 int		is_builtin(t_command *cmd);
 int 	exec_builtin(t_shell *shell, t_command *cmd);
+int		ft_env(t_shell *shell);
 
 /* executor utils 1*/
 void	init_command(t_command *cmd, pid_t *wpid, int makepipe, int *pipefdp);
