@@ -2,8 +2,17 @@
 
 int	ft_echo(t_command *cmd)
 {
-	(void)cmd;
-	printf("eseguo echo!\n");
+	int	i;
+
+	i = 0;
+
+	while (++i < cmd->argc)
+		{
+			write(1, cmd->argv[i], ft_strlen(cmd->argv[i]));
+			if (cmd->argv[i + 1])
+				write(1," ", 1);
+		}
+	write(1, "\n", 1);
 	return (0);
 }
 
