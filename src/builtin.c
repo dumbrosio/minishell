@@ -13,14 +13,13 @@ int	ft_env(t_shell *shell)
 
 	i = 0;
 	while (shell->envp[i])
-		printf("%s\n",shell->envp[i++]);
+		printf("%s\n", shell->envp[i++]);
 	return (0);
 }
 
-int	ft_pwd(t_command *cmd)
+int	ft_pwd(t_shell *shell)
 {
-	(void)cmd;
-	printf("eseguo pwd!\n");
+	printf("%s\n", ft_getenv(shell, "PWD"));
 	return (0);
 }
 
@@ -43,6 +42,6 @@ int	exec_builtin(t_shell *shell, t_command *cmd)
 	else if (ft_strcmp(cmd->argv[0], "env") == 0)
 		return (ft_env(shell));
 	else if (ft_strcmp(cmd->argv[0], "pwd") == 0)
-		return (ft_pwd(cmd));
+		return (ft_pwd(shell));
 	return (1);
 }
