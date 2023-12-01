@@ -56,20 +56,27 @@ int	cmd_special(t_shell *shell, t_command *cmd)
 pid_t	invoke(t_shell *shell, t_command *cmd)
 {
 	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-	{
-		print_error("Can't create new process");
+	
+	if (cmd->argc == 0 || other_builtins(shell,cmd))
 		return (0);
+	else
+	{
+		pid = fork();
+		if (pid == -1)
+		{
+			print_error("Can't create new process");
+			return (0);
+		}
+		if (pid == 0)
+			invoke_child(shell, cmd);
+		if (cmd->srcfd > STDOUT_FILENO)
+			close(cmd->srcfd);
+		if (cmd->dstfd > STDOUT_FILENO)
+			close(cmd->dstfd);
+		return (pid);
 	}
-	if (pid == 0)
-		invoke_child(shell, cmd);
-	if (cmd->srcfd > STDOUT_FILENO)
-		close(cmd->srcfd);
-	if (cmd->dstfd > STDOUT_FILENO)
-		close(cmd->dstfd);
-	return (pid);
+
+
 }
 
 void	invoke_child(t_shell *shell, t_command *cmd)
