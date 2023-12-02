@@ -28,7 +28,7 @@ void	print_error(char *str)
 	write(STDERR_FILENO, "\n", 1);
 }
 
-void	ft_split_clean(char **split)
+void	clean_split(char **split)
 {
 	int	i;
 

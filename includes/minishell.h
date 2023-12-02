@@ -12,144 +12,146 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+# define BUFFERSIZE 4096
 # define MAXARG 50 /* max args in cmd */
 # define MAXFNAME 500 /* max chars in file name */
 # define MAXWORD 500 /* max chars in arg */
-
-# define BUFFERSIZE 4096
 
 extern int	g_var;
 
 typedef struct s_shell
 {
-	char	*prompt;
-	char	*buffer;
-	size_t	buffer_pos;
-	char	*command;
-	size_t	command_pos;
-	int		stdin_fd;
-	int		stdout_fd;
-	int		stderr_fd;
-	pid_t	main_pid;
-	int		exit_code;
-	char	*path_cmd;
 	char	**envp;
 	char	**localenvp;
+	char	*buffer;
+	char	*command;
+	char	*path_cmd;
+	char	*prompt;
+	int		exit_code;
+	int		stderr_fd;
+	int		stdin_fd;
+	int		stdout_fd;
+	pid_t	main_pid;
+	size_t	buffer_pos;
+	size_t	command_pos;
 }			t_shell;
 
 typedef enum e_token
 {
-	T_WORD,
-	T_PIPE,
-	T_LESS,
-	T_GREAT,
-	T_DLESS,
 	T_DGREAT,
-	T_NL,
+	T_DLESS,
 	T_EOF,
 	T_ERROR,
-	T_NOTOKEN
+	T_GREAT,
+	T_LESS,
+	T_NL,
+	T_NOTOKEN,
+	T_PIPE,
+	T_WORD,
 }			t_token;
 
 typedef enum e_pstatus
 {
-	P_NEUTRAL,
 	P_DGREAT,
 	P_DLESS,
+	P_INWORD,
+	P_NEUTRAL,
 	P_QUOTE,
-	P_INWORD
 }	t_pstatus;
 
 typedef struct s_command
 {
-	int		argc;
-	int		srcfd;
-	int		dstfd;
-	int		pid;
-	int		pfd[2];
 	char	*argv[MAXARG];
-	char	srcfile[MAXFNAME];
 	char	dstfile[MAXFNAME];
-	int		append;
-	t_token	tk;
-	t_token	term;
-	int		makepipe;
+	char	srcfile[MAXFNAME];
 	int		*pipefdp;
+	int		append;
+	int		argc;
+	int		dstfd;
+	int		makepipe;
+	int		pfd[2];
+	int		pid;
+	int		srcfd;
 	pid_t	*wpid;
+	t_token	term;
+	t_token	tk;
 }	t_command;
 
-/* minishell.c */
+/* minishell */
 void	clean_shell(t_shell *shell);
 void	init_shell(t_shell *shell, char **envp);
 void	run_shell(t_shell *shell);
+void	signal_handler(int sig);
 
 /*path*/
 char	*create_abs_path(char *path, char *cmd);
-void	free_path(char **path);
 char	*get_abs_path(t_shell *shell, char *cmd);
-
-/*signals*/
-void	signal_handler(int sig);
+void	free_path(char **path);
 
 /*debug*/
 void	test_parser(t_shell *shell);
 
 /*parser*/
 int		ft_getchar(t_shell *shell);
-void	store_char(t_shell *shell, int c);
+t_token	get_token(t_shell *shell);
 void	choose_state(t_shell *shell, t_pstatus *state, t_token *token, int c);
 void	parse_dgreat(t_shell *shell, t_token *token, int c);
 void	parse_dless(t_shell *shell, t_token *token, int c);
+void	parse_inword(t_shell *shell, t_token *token, int c);
 void	parse_neutral(t_shell *shell, t_pstatus *state, t_token *token, int c);
 void	parse_quote(t_shell *shell, t_token *token, int c);
-void	parse_inword(t_shell *shell, t_token *token, int c);
-t_token	get_token(t_shell *shell);
+void	store_char(t_shell *shell, int c);
 
 /* executor */
-t_token	command(t_shell *shell, pid_t *wpid, int makepipe, int *pipefdp);
 int		cmd_special(t_shell *shell, t_command *cmd);
+t_token	command(t_shell *shell, pid_t *wpid, int makepipe, int *pipefdp);
 
-/* builtin */
-int		is_builtin(t_command *cmd);
-int 	exec_builtin(t_shell *shell, t_command *cmd);
+/* builtins1 */
+int		ft_echo(t_command *cmd);
 int		ft_env(t_shell *shell);
 int		ft_pwd(t_shell *shell);
-int		ft_echo(t_command *cmd);
-int		other_builtins(t_shell *shell, t_command *cmd);
+int		is_builtin(t_command *cmd);
+int 	exec_builtin(t_shell *shell, t_command *cmd);
+
+/* builtins2 */
+int		ft_cd(t_shell *shell,t_command *cmd);
 int		ft_exit(t_shell *shell);
 int		ft_export(t_shell *shell,t_command *cmd);
 int		ft_unset(t_shell *shell,t_command *cmd);
-int		ft_cd(t_shell *shell,t_command *cmd);
-/* executor utils 1*/
-void	init_command(t_command *cmd, pid_t *wpid, int makepipe, int *pipefdp);
-void	add_word(t_shell *shell, t_command *cmd);
-int		switch_simple_tokens(t_shell *shell, t_command *cmd);
+int		other_builtins(t_shell *shell, t_command *cmd);
+
+/* executor_utils1*/
 int		set_redirect_in(t_shell *shell, t_command *cmd);
 int		set_redirect_out(t_shell *shell, t_command *cmd);
+int		switch_simple_tokens(t_shell *shell, t_command *cmd);
+void	add_word(t_shell *shell, t_command *cmd);
+void	init_command(t_command *cmd, pid_t *wpid, int makepipe, int *pipefdp);
 
-/* executor utils 2*/
+/* executor_utils2*/
 int		is_terminal_token(t_token token);
-void	redirect(t_command *cmd);
-void	free_command_args(t_command *cmd);
 int		wait_command(t_shell *shell, pid_t pid);
+void	free_command_args(t_command *cmd);
+void	redirect(t_command *cmd);
 void	setpipe(t_command *cmd);
 
-/* executor utils 3*/
-void	reset_filename(char *filename);
-void	set_file(t_command *cmd);
-void	set_exit_status(t_shell *shell, int status);
+/* executor_utils3*/
 pid_t	invoke(t_shell *shell, t_command *cmd);
 void	invoke_child(t_shell *shell, t_command *cmd);
+void	reset_filename(char *filename);
+void	set_exit_status(t_shell *shell, int status);
+void	set_file(t_command *cmd);
 
 /* env */
-char	*ft_getenv(t_shell *shell, char *key);
 char	**get_env_entry(char **env, char *key);
+char	*ft_getenv(t_shell *shell, char *key);
+int		pop_env_entry(char ***env, char *key);
 
 /*utils*/
-void	print_error(char *str);
 char	**copy_environment(char **env);
-void	ft_split_clean(char **split);
 char	*ft_strcpy(char *dest, const char *src);
 int		ft_strcmp(const char *s1, const char *s2);
+void	clean_split(char **split);
+void	print_error(char *str);
 
 #endif

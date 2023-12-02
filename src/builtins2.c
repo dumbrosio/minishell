@@ -42,10 +42,23 @@ int	ft_export(t_shell *shell, t_command *cmd)
 
 int	ft_unset(t_shell *shell, t_command *cmd)
 {
-	(void)shell;
-	(void)cmd;
-	printf("eseguo unset\n");
-	return (0);
+	int	i;
+	int	ret;
+
+	i = 1;
+	ret = 0;
+	while (i < cmd->argc)
+	{
+		if (pop_env_entry(&shell->envp, cmd->argv[i]))
+		{
+			i++;
+			continue ;
+		}
+		if (pop_env_entry(&shell->localenvp, cmd->argv[i++]))
+			continue ;
+		ret++;
+	}
+	return (ret);
 }
 
 int	ft_cd(t_shell *shell, t_command *cmd)

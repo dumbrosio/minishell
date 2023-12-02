@@ -23,11 +23,38 @@ char	**get_env_entry(char **env, char *key)
 		split_entry = ft_split(env[i], '=');
 		if (ft_strcmp(split_entry[0], key) == 0)
 		{
-			ft_split_clean(split_entry);
+			clean_split(split_entry);
 			return (&env[i]);
 		}
-		ft_split_clean(split_entry);
+		clean_split(split_entry);
 		i++;
 	}
 	return (&env[i]);
+}
+
+int	pop_env_entry(char ***env, char *key)
+{
+	int		i;
+	int		j;
+	char	**tmp;
+	char	**splitted_entries;
+
+	i = 0;
+	while ((*env)[i])
+		i++;
+	tmp = (char **)malloc(sizeof(char *) * (i + 2));
+	i = 0;
+	j = 0;
+	while ((*env)[i])
+	{
+		splitted_entries = ft_split((*env)[i], '=');
+		if (ft_strcmp(splitted_entries[0], key))
+			tmp[j++] = (*env)[i++];
+		else
+			i++;
+		clean_split(splitted_entries);
+	}
+	tmp[j] = NULL;
+	*env = tmp;
+	return (i == (j + 1));
 }
