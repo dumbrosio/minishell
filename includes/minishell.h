@@ -113,7 +113,13 @@ int		cmd_special(t_shell *shell, t_command *cmd);
 int		is_builtin(t_command *cmd);
 int 	exec_builtin(t_shell *shell, t_command *cmd);
 int		ft_env(t_shell *shell);
-
+int		ft_pwd(t_shell *shell);
+int		ft_echo(t_command *cmd);
+int		other_builtins(t_shell *shell, t_command *cmd);
+int		ft_exit(t_shell *shell);
+int		ft_export(t_shell *shell,t_command *cmd);
+int		ft_unset(t_shell *shell,t_command *cmd);
+int		ft_cd(t_shell *shell,t_command *cmd);
 /* executor utils 1*/
 void	init_command(t_command *cmd, pid_t *wpid, int makepipe, int *pipefdp);
 void	add_word(t_shell *shell, t_command *cmd);
