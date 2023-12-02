@@ -46,8 +46,8 @@ void	clean_shell(t_shell *shell)
 {
 	free(shell->prompt);
 	free(shell->buffer);
-	ft_split_clean(shell->envp);
-	ft_split_clean(shell->localenvp);
+	clean_split(shell->envp);
+	clean_split(shell->localenvp);
 }
 
 void	signal_handler(int sig)
@@ -67,20 +67,20 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	shell;
 
 	if (argc > 1)
+	{
+		if (ft_strncmp(argv[1], "parser", 6) == 0)
 		{
-			if (ft_strncmp(argv[1], "parser", 6) == 0)
-			{
-				init_shell(&shell, envp);
-				test_parser(&shell);
-				return (0);
-			}
-			else
-			{
-				printf("Usage:\n./minishell: Run minishell\n");
-				printf("./minishell parser: Test parser\n");
-				return (1);
-			}
+			init_shell(&shell, envp);
+			test_parser(&shell);
+			return (0);
 		}
+		else
+		{
+			printf("Usage:\n./minishell: Run minishell\n");
+			printf("./minishell parser: Test parser\n");
+			return (1);
+		}
+	}
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, signal_handler);
 	init_shell(&shell, envp);
