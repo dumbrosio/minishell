@@ -72,16 +72,14 @@ int	ft_cd(t_shell *shell, t_command *cmd)
 			path = ft_strdup(ft_getenv(shell, "PWD"));
 	}
 	else
-	{
 		path = set_new_path(shell, cmd->argv[1]);
-		if (chdir(path) == -1)
-		{
-			perror(cmd->argv[1]);
-			free(path);
-			return (1);
-		}
-		update_pwd(shell, path);
+	if (chdir(path) == -1)
+	{
+		perror(cmd->argv[1]);
 		free(path);
+		return (1);
 	}
+	update_pwd(shell, path);
+	free(path);
 	return (0);
 }
