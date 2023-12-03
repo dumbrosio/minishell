@@ -4,29 +4,29 @@ char	*ft_getenv(t_shell *shell, char *key)
 {
 	char	**entry;
 
-	entry = get_env_entry(shell->envp, key);
+	entry = ft_getenv_entry(shell->envp, key);
 	if (!*entry)
-		entry = get_env_entry(shell->localenvp, key);
+		entry = ft_getenv_entry(shell->localenvp, key);
 	if (!*entry)
 		return (NULL);
 	return (ft_strchr(*entry, '=') + 1);
 }
 
-char	**get_env_entry(char **env, char *key)
+char	**ft_getenv_entry(char **env, char *key)
 {
 	int		i;
-	char	**split_entry;
+	char	**splitted_entry;
 
 	i = 0;
 	while (env[i])
 	{
-		split_entry = ft_split(env[i], '=');
-		if (ft_strcmp(split_entry[0], key) == 0)
+		splitted_entry = ft_split(env[i], '=');
+		if (ft_strcmp(splitted_entry[0], key) == 0)
 		{
-			clean_split(split_entry);
+			clean_split(splitted_entry);
 			return (&env[i]);
 		}
-		clean_split(split_entry);
+		clean_split(splitted_entry);
 		i++;
 	}
 	return (&env[i]);
@@ -58,3 +58,5 @@ int	pop_env_entry(char ***env, char *key)
 	*env = tmp;
 	return (i == (j + 1));
 }
+
+

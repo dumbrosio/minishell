@@ -63,8 +63,25 @@ int	ft_unset(t_shell *shell, t_command *cmd)
 
 int	ft_cd(t_shell *shell, t_command *cmd)
 {
-	(void)shell;
-	(void)cmd;
-	printf("eseguo cd\n");
+	char	*path;
+
+	if (cmd->argc == 1)
+	{
+		path = ft_strdup(ft_getenv(shell, "HOME"));
+		if (path == NULL)
+			path = ft_strdup(ft_getenv(shell, "PWD"));
+	}
+	else
+	{
+		path = set_new_path(shell, cmd->argv[1]);
+		if (chdir(path) == -1)
+		{
+			perror(cmd->argv[1]);
+			free(path);
+			return (1);
+		}
+		update_pwd(shell, path);
+		free(path);
+	}
 	return (0);
 }

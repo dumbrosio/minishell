@@ -78,6 +78,13 @@ typedef struct s_command
 	t_token	tk;
 }	t_command;
 
+typedef struct s_entry
+{
+	char	*entry;
+	char	*key;
+	char	*value;
+}	t_entry;
+
 /* minishell */
 void	clean_shell(t_shell *shell);
 void	init_shell(t_shell *shell, char **envp);
@@ -88,6 +95,8 @@ void	signal_handler(int sig);
 char	*create_abs_path(char *path, char *cmd);
 char	*get_abs_path(t_shell *shell, char *cmd);
 void	free_path(char **path);
+char	*set_new_path(t_shell *shell, char *str);
+char	*build_new_path(char *curpath, char *str);
 
 /*debug*/
 void	test_parser(t_shell *shell);
@@ -142,10 +151,15 @@ void	reset_filename(char *filename);
 void	set_exit_status(t_shell *shell, int status);
 void	set_file(t_command *cmd);
 
-/* env */
-char	**get_env_entry(char **env, char *key);
+/* env1*/
+char	**ft_getenv_entry(char **env, char *key);
 char	*ft_getenv(t_shell *shell, char *key);
 int		pop_env_entry(char ***env, char *key);
+
+/* env2*/
+void	ft_add_entry(char ***env, char *entry);
+int		ft_setenv(t_shell *shell, char *key, char *value);
+void	update_pwd(t_shell *shell, char *path);
 
 /*utils*/
 char	**copy_environment(char **env);
