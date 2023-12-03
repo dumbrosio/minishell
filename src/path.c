@@ -16,16 +16,6 @@ char	*create_abs_path(char *path, char *cmd)
 	return (abs);
 }
 
-void	free_path(char **path)
-{
-	char	**runner;
-
-	runner = path;
-	while (*runner)
-		free(*runner++);
-	free(path);
-}
-
 char	*get_abs_path(t_shell *shell, char *cmd)
 {
 	char	*abs;
@@ -78,26 +68,31 @@ char	*build_new_path(char *curpath, char *str)
 	ft_strcpy(path, curpath);
 	splitted = ft_split(str, '/');
 	i = 0;
-	while (splitted[i])
-	{
-		if(ft_strcmp(".", splitted[i]) == 0)
-		{
-			i++;
-			continue ;
-		}
-		else if (ft_strcmp("..", splitted[i]) == 0)
-		{
-			if (ft_strrchr(path, '/') && ft_strrchr(path, '/') != path)
-				*ft_strrchr(path, '/') = 0;
-			else
-				ft_strcpy(path, "/");
-			i++;
-			continue ;
-		}
-		if (ft_strcmp("/", path) != 0)
-			ft_strcat(path, "/");
-		ft_strcat(path, splitted[i++]);
-	}
+	build_path(splitted, i, path);
 	clean_split(splitted);
 	return (ft_strdup(path));
+}
+
+void	build_path(char **splitted, int i, char *path)
+{
+	while (splitted[i])
+		{
+			if(ft_strcmp(".", splitted[i]) == 0)
+			{
+				i++;
+				continue ;
+			}
+			else if (ft_strcmp("..", splitted[i]) == 0)
+			{
+				if (ft_strrchr(path, '/') && ft_strrchr(path, '/') != path)
+					*ft_strrchr(path, '/') = 0;
+				else
+					ft_strcpy(path, "/");
+				i++;
+				continue ;
+			}
+			if (ft_strcmp("/", path) != 0)
+				ft_strcat(path, "/");
+			ft_strcat(path, splitted[i++]);
+		}
 }

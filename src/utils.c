@@ -39,3 +39,13 @@ void	clean_split(char **split)
 		free(split[i++]);
 	free(split);
 }
+
+void	free_path(char **path)
+{
+	char	**runner;
+
+	runner = path;
+	while (*runner)
+		free(*runner++);
+	free(path);
+}

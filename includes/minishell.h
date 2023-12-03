@@ -94,9 +94,9 @@ void	signal_handler(int sig);
 /*path*/
 char	*create_abs_path(char *path, char *cmd);
 char	*get_abs_path(t_shell *shell, char *cmd);
-void	free_path(char **path);
 char	*set_new_path(t_shell *shell, char *str);
 char	*build_new_path(char *curpath, char *str);
+void 	build_path(char **splitted, int i,char *path);
 
 /*debug*/
 void	test_parser(t_shell *shell);
@@ -163,9 +163,8 @@ void	update_pwd(t_shell *shell, char *path);
 
 /*utils*/
 char	**copy_environment(char **env);
-char	*ft_strcpy(char *dest, const char *src);
-int		ft_strcmp(const char *s1, const char *s2);
 void	clean_split(char **split);
 void	print_error(char *str);
+void	free_path(char **path);
 
 #endif
