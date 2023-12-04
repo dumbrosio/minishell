@@ -58,5 +58,3 @@ int	pop_env_entry(char ***env, char *key)
 	*env = tmp;
 	return (i == (j + 1));
 }
-
-

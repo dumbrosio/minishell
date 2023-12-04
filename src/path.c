@@ -77,7 +77,7 @@ void	build_path(char **splitted, int i, char *path)
 {
 	while (splitted[i])
 	{
-		if(ft_strcmp(".", splitted[i]) == 0)
+		if (ft_strcmp(".", splitted[i]) == 0)
 		{
 			i++;
 			continue ;
