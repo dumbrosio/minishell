@@ -66,18 +66,23 @@ int	ft_unset(t_shell *shell, t_command *cmd)
 
 	i = 1;
 	ret = 0;
-	while (i < cmd->argc)
+	if (cmd->argc == 1)
+		return (1);
+	else
 	{
-		if (pop_env_entry(&shell->envp, cmd->argv[i]))
+		while (i < cmd->argc)
 		{
-			i++;
-			continue ;
+			if (pop_env_entry(&shell->envp, cmd->argv[i]))
+			{
+				i++;
+				continue ;
+			}
+			if (pop_env_entry(&shell->localenvp, cmd->argv[i++]))
+				continue ;
+			ret++;
 		}
-		if (pop_env_entry(&shell->localenvp, cmd->argv[i++]))
-			continue ;
-		ret++;
+		return (ret);
 	}
-	return (ret);
 }
 
 int	ft_cd(t_shell *shell, t_command *cmd)

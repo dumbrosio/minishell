@@ -58,7 +58,9 @@ int	ft_setenv_entry(char *token, t_entry *entry)
 {
 	char	*sep;
 	int		pos;
+	size_t	token_len;
 
+	token_len = ft_strlen(token);
 	if (token[0] == '=' || ft_isdigit(token[0]))
 		return (1);
 	entry->entry = ft_strdup(token);
@@ -72,7 +74,7 @@ int	ft_setenv_entry(char *token, t_entry *entry)
 	}
 	pos = (int)(sep - token);
 	entry->key = (char *)malloc(sizeof(char) * (pos + 1));
-	entry->value = (char *)malloc(sizeof(char) * ft_strlen(token - pos + 1));
+	entry->value = (char *)malloc(sizeof(char) * (token_len - pos + 1));
 	ft_strncpy(entry->key, token, pos);
 	ft_strcpy(entry->value, token + pos + 1);
 	return (0);
