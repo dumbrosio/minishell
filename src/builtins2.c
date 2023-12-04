@@ -34,9 +34,28 @@ int	ft_exit(t_shell *shell)
 
 int	ft_export(t_shell *shell, t_command *cmd)
 {
-	(void)shell;
-	(void)cmd;
-	printf("eseguo export\n");
+	char	**env_entry;
+	t_entry	entry;
+	int		i;
+
+	i = 1;
+	if (cmd->argc == 1)
+		print_export_entry(shell);
+	else
+	{
+		while (i < cmd->argc)
+		{
+			if (ft_setenv_entry(cmd->argv[i], &entry))
+				return (1);
+			if (entry.value)
+				ft_setenv(shell, entry.key, entry.value);
+			env_entry = ft_getenv_entry(shell->localenvp, entry.key);
+			pop_env_entry(&shell->localenvp, entry.key);
+			ft_add_entry(&shell->envp, *env_entry);
+			clean_entry(&entry);
+			i++;
+		}
+	}
 	return (0);
 }
 

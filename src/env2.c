@@ -47,22 +47,33 @@ int	ft_setenv(t_shell *shell, char *key, char *value)
 	return (0);
 }
 
-void	update_pwd(t_shell *shell, char *path)
+void	clean_entry(t_entry *entry)
 {
-	char	*pwd;
-	char	*oldpwd;
+	free(entry->entry);
+	free(entry->key);
+	free(entry->value);
+}
 
-	if (*ft_getenv_entry(shell->envp, "OLDPWD"))
-		ft_setenv(shell, "OLDPWD", ft_getenv(shell, "PWD"));
-	else
+int	ft_setenv_entry(char *token, t_entry *entry)
+{
+	char	*sep;
+	int		pos;
+
+	if (token[0] == '=' || ft_isdigit(token[0]))
+		return (1);
+	entry->entry = ft_strdup(token);
+	sep = ft_strchr(token, '=');
+	if (!sep)
 	{
-		pwd = ft_strdup(ft_getenv(shell, "PWD"));
-		oldpwd = (char *)malloc(sizeof(char) * ft_strlen(pwd) + 8);
-		ft_strcat(oldpwd, "OLDPWD=");
-		ft_strcat(oldpwd, pwd);
-		ft_add_entry(&shell->envp, oldpwd);
-		free(pwd);
-		free(oldpwd);
+		entry->entry = ft_strdup(token);
+		entry->key = ft_strdup(token);
+		entry->value = NULL;
+		return (1);
 	}
-	ft_setenv(shell, "PWD", path);
+	pos = (int)(sep - token);
+	entry->key = (char *)malloc(sizeof(char) * (pos + 1));
+	entry->value = (char *)malloc(sizeof(char) * ft_strlen(token - pos + 1));
+	ft_strncpy(entry->key, token, pos);
+	ft_strcpy(entry->value, token + pos + 1);
+	return (0);
 }
