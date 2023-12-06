@@ -24,6 +24,7 @@ char	**ft_getenv_entry(char **env, char *key)
 		if (ft_strcmp(splitted_entry[0], key) == 0)
 		{
 			clean_split(splitted_entry);
+			printf("env trovato  %s\n", env[i]);
 			return (&env[i]);
 		}
 		clean_split(splitted_entry);

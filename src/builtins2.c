@@ -45,27 +45,19 @@ int	ft_export(t_shell *shell, t_command *cmd)
 	{
 		while (i < cmd->argc)
 		{
-			int z = 0;
-			while (shell->envp[z])
-			{
-				if (ft_strcmp(cmd->argv[1],shell->envp[z++]) == 0)
-					return (0);
-			}
-			printf("argv di export %s\n",cmd->argv[1]);
 			if (ft_setenv_entry(cmd->argv[i], &entry))
-			{
-				printf("dentro set env entry\n");
 				return (0);
-			}
 			if (entry.value)
 			{
-				printf("se ce entry value\n");
 				ft_setenv(shell, entry.key, entry.value);
-				//return(0);
+				env_entry = ft_getenv_entry(shell->localenvp, entry.key);
+				if (env_entry && *env_entry)
+				{
+					pop_env_entry(&shell->localenvp, entry.key);
+					ft_add_entry(&shell->envp, *env_entry);
+					//free(*env_entry);
+				}
 			}
-			env_entry = ft_getenv_entry(shell->localenvp, entry.key);
-			pop_env_entry(&shell->localenvp, entry.key);
-			ft_add_entry(&shell->envp, *env_entry);
 			clean_entry(&entry);
 			i++;
 		}
