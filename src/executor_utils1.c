@@ -43,6 +43,8 @@ void	add_word(t_shell *shell, t_command *cmd)
 		print_error("Too many args");
 		return ;
 	}
+	if (shell->expand)
+		expand(shell);
 	cmd->argv[cmd->argc] = malloc(strlen(shell->buffer) + 1);
 	if (cmd->argv[cmd->argc] == NULL)
 	{

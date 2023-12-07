@@ -37,6 +37,7 @@ void	choose_state(t_shell *shell, t_pstatus *state, t_token *token, int c)
 
 void	parse_neutral(t_shell *shell, t_pstatus *state, t_token *token, int c)
 {
+	shell->expand = 1;
 	if (c == '|')
 		*token = T_PIPE;
 	else if (c == '\n')
@@ -48,7 +49,11 @@ void	parse_neutral(t_shell *shell, t_pstatus *state, t_token *token, int c)
 	else if (c == '<')
 		*state = P_DLESS;
 	else if (c == '"' || c == '\'')
+	{
 		*state = P_QUOTE;
+		if (c == '\'')
+			shell->expand = 0;
+	}
 	else
 	{
 		*state = P_INWORD;

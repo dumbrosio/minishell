@@ -35,6 +35,7 @@ typedef struct s_shell
 	char	*path_cmd;
 	char	**envp;
 	char	**localenvp;
+	int		expand;
 }			t_shell;
 
 typedef enum e_token
@@ -140,5 +141,8 @@ char	**copy_environment(char **env);
 void	ft_split_clean(char **split);
 char	*ft_strcpy(char *dest, const char *src);
 int		ft_strcmp(const char *s1, const char *s2);
+
+/*expander*/
+void		expand(t_shell *shell);
 
 #endif
