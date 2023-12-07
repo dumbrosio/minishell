@@ -55,7 +55,6 @@ int	ft_export(t_shell *shell, t_command *cmd)
 				{
 					pop_env_entry(&shell->localenvp, entry.key);
 					ft_add_entry(&shell->envp, *env_entry);
-					//free(*env_entry);
 				}
 			}
 			clean_entry(&entry);
