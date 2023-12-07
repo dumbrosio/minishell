@@ -12,6 +12,7 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->exit_code = 0;
 	shell->localenvp = (char **)malloc(sizeof(char *));
 	shell->localenvp[0] = NULL;
+	shell->expand = 1;
 }
 
 void	run_shell(t_shell *shell)
@@ -67,20 +68,20 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	shell;
 
 	if (argc > 1)
+	{
+		if (ft_strncmp(argv[1], "parser", 6) == 0)
 		{
-			if (ft_strncmp(argv[1], "parser", 6) == 0)
-			{
-				init_shell(&shell, envp);
-				test_parser(&shell);
-				return (0);
-			}
-			else
-			{
-				printf("Usage:\n./minishell: Run minishell\n");
-				printf("./minishell parser: Test parser\n");
-				return (1);
-			}
+			init_shell(&shell, envp);
+			test_parser(&shell);
+			return (0);
 		}
+		else
+		{
+			printf("Usage:\n./minishell: Run minishell\n");
+			printf("./minishell parser: Test parser\n");
+			return (1);
+		}
+	}
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, signal_handler);
 	init_shell(&shell, envp);
