@@ -39,4 +39,5 @@ void	expand(t_shell *shell)
 			add_expanded_env_var(shell, buffer_copy, &i, &j);
 	}
 	shell->buffer[j] = '\0';
+	free(buffer_copy);
 }
