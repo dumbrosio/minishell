@@ -4,7 +4,7 @@ void	ft_add_entry(char ***env, char *entry)
 {
 	int		i;
 	char	**tmp;
-	char    *entry_dup;
+	char	*entry_dup;
 
 	entry_dup = ft_strdup(entry);
 

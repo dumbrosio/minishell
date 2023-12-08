@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+int	ft_exit(t_shell *shell)
+{
+	free(shell->command);
+	clean_shell(shell);
+	_exit(EXIT_SUCCESS);
+}
+
 int	print_export_entry(t_shell *shell)
 {
 	int		i;

@@ -123,14 +123,15 @@ int		is_builtin(t_command *cmd);
 int		exec_builtin(t_shell *shell, t_command *cmd);
 
 /* builtins2 */
-int		ft_cd(t_shell *shell, t_command *cmd);
-int		ft_exit(t_shell *shell);
-int		ft_export(t_shell *shell, t_command *cmd);
-int		ft_unset(t_shell *shell, t_command *cmd);
 int		other_builtins(t_shell *shell, t_command *cmd);
+int		ft_export(t_shell *shell, t_command *cmd);
+int		export_core(t_shell *shell, t_command *cmd);
+int		ft_unset(t_shell *shell, t_command *cmd);
+int		ft_cd(t_shell *shell, t_command *cmd);
 
 /* builtins3 */
 int		print_export_entry(t_shell *shell);
+int		ft_exit(t_shell *shell);
 void	update_pwd(t_shell *shell, char *path);
 
 /* executor_utils1*/
