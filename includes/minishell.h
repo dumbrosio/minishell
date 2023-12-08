@@ -79,9 +79,9 @@ typedef struct s_command
 }	t_command;
 
 /* minishell.c */
-void	clean_shell(t_shell *shell);
-void	init_shell(t_shell *shell, char **envp);
-void	run_shell(t_shell *shell);
+void	init_sh(t_shell *shell, char **envp);
+void	run_sh(t_shell *shell);
+void	clean_sh(t_shell *shell);
 
 /*path*/
 char	*create_abs_path(char *path, char *cmd);
@@ -97,13 +97,13 @@ void	test_parser(t_shell *shell);
 /*parser*/
 int		ft_getchar(t_shell *shell);
 void	store_char(t_shell *shell, int c);
-void	choose_method(t_shell *shell, t_pstatus *state, t_token *token, int c);
+void	choose_state(t_shell *shell, t_pstatus *state, t_token *token, int c);
 void	parse_dgreat(t_shell *shell, t_token *token, int c);
 void	parse_dless(t_shell *shell, t_token *token, int c);
 void	parse_neutral(t_shell *shell, t_pstatus *state, t_token *token, int c);
 void	parse_quote(t_shell *shell, t_token *token, int c);
 void	parse_inword(t_shell *shell, t_token *token, int c);
-t_token	gettoken(t_shell *shell);
+t_token	get_token(t_shell *shell);
 
 /* executor */
 t_token	command(t_shell *shell, pid_t *wpid, int makepipe, int *pipefdp);

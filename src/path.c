@@ -7,7 +7,6 @@ char	*create_abs_path(char *path, char *cmd)
 	char	*abs;
 
 	path_len = ft_strlen(path);
-	//cmd_len need fix strlen of an empy string create leaks
 	cmd_len = ft_strlen(cmd);
 	abs = (char *)malloc(sizeof(char) * (cmd_len + path_len + 2));
 	ft_strncpy(abs, path, path_len);

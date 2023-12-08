@@ -1,26 +1,5 @@
 #include "minishell.h"
 
-void	parse_neutral(t_shell *shell, t_pstatus *state, t_token *token, int c)
-{
-	if (c == '|')
-		*token = T_PIPE;
-	else if (c == '\n')
-		*token = T_NL;
-	else if (c == ' ' || c == '\t')
-		return ;
-	else if (c == '>')
-		*state = P_DGREAT;
-	else if (c == '<')
-		*state = P_DLESS;
-	else if (c == '"' || c == '\'')
-		*state = P_QUOTE;
-	else
-	{
-		*state = P_INWORD;
-		store_char(shell, c);
-	}
-}
-
 void	parse_dgreat(t_shell *shell, t_token *token, int c)
 {
 	if (c == '>' && shell->command[shell->command_pos - 2] == '>')
@@ -85,7 +64,7 @@ void	parse_inword(t_shell *shell, t_token *token, int c)
 		store_char(shell, c);
 }
 
-t_token	gettoken(t_shell *shell)
+t_token	get_token(t_shell *shell)
 {
 	t_pstatus	state;
 	t_token		token;
@@ -97,7 +76,7 @@ t_token	gettoken(t_shell *shell)
 	c = shell->command[shell->command_pos++];
 	while (token == T_NOTOKEN || c != 0)
 	{
-		choose_method(shell, &state, &token, c);
+		choose_state(shell, &state, &token, c);
 		if (c == 0)
 			break ;
 		if (token == T_NOTOKEN)

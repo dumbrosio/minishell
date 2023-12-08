@@ -8,7 +8,7 @@ t_token	command(t_shell *shell, pid_t *wpid, int makepipe, int *pipefdp)
 	init_command(&cmd, wpid, makepipe, pipefdp);
 	while (1)
 	{
-		cmd.tk = gettoken(shell);
+		cmd.tk = get_token(shell);
 		result = switch_simple_tokens(shell, &cmd);
 		if (result == 2)
 			break ;
