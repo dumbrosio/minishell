@@ -40,18 +40,3 @@ void	ft_clean(char **split)
 	free(split);
 }
 
-int	is_space(int c)
-{
-	return (c == 32 || c == 9 || c == 10);
-}
-
-int	is_empty_str(char *str)
-{
-	while (*str)
-	{
-		if (is_space(*str))
-			return (1);
-		str++;
-	}
-	return (0);
-}

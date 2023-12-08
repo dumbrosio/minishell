@@ -134,11 +134,14 @@ void	invoke_child(t_shell *shell, t_command *cmd);
 char	*ft_getenv(t_shell *shell, char *key);
 char	**get_env_entry(char **env, char *key);
 
-/*utils*/
+/*utils1*/
 void	print_error(char *str);
 char	**copy_env(char **env);
 void	ft_clean(char **split);
-int		is_space(int c);
-int		is_empty_str(char *str);
+
+/*utils2*/
+int		add_to_rlh(char *cmd);
+int		handle_input(t_shell *shell, t_token term);
+void	handle_command(t_shell *shell, t_token *term, pid_t *pid);
 
 #endif

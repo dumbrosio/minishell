@@ -14,33 +14,23 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->localenvp[0] = NULL;
 }
 
-void	run_shell(t_shell *shell)
+void run_shell(t_shell *shell)
 {
-	pid_t	pid;
-	t_token	term;
+	pid_t   pid;
+	t_token term;
 
 	term = T_NL;
 	shell->command = readline(shell->prompt);
 	while (shell->command)
 	{
-		if (term == T_NL)
-		{
-			shell->command_pos = 0;
-			if (ft_strlen(shell->command) && !is_empty_str(shell->command))
-				add_history(shell->command);
-		}
-		term = command(shell, &pid, 0, NULL);
-		if (term == T_ERROR)
-		{
-			print_error("Bad command");
-			term = T_NL;
-		}
-		else if (pid > 0)
-			wait_command(shell, pid);
+		if (!handle_input(shell, term))
+			continue;
+		handle_command(shell, &term, &pid);
 		free(shell->command);
 		shell->command = readline(shell->prompt);
 	}
 }
+
 
 void	clean_shell(t_shell *shell)
 {
@@ -88,3 +78,5 @@ int	main(int argc, char **argv, char **envp)
 	clean_shell(&shell);
 	return (0);
 }
+
+
