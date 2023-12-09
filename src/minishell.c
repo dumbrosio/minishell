@@ -47,8 +47,8 @@ void	clean_shell(t_shell *shell)
 {
 	free(shell->prompt);
 	free(shell->buffer);
-	ft_split_clean(shell->envp);
-	ft_split_clean(shell->localenvp);
+	clean_split(shell->envp);
+	clean_split(shell->localenvp);
 }
 
 void	signal_handler(int sig)

@@ -1,35 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amatta <amatta@student.42roma.it>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/03 17:13:31 by vd-ambro          #+#    #+#             */
-/*   Updated: 2023/12/05 12:35:06 by amatta           ###   ########.fr       */
+/*   Created: 2023/12/02 13:05:50 by amatta            #+#    #+#             */
+/*   Updated: 2023/12/02 13:06:57 by amatta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcpy(char *dest, const char *src, size_t dstsize)
+char	*ft_strcat(char *dest, char *src)
 {
-	size_t	srclen;
-	size_t	i;
+	char	*runner;
 
-	if (!src)
-		srclen = 0;
-	else
-		srclen = ft_strlen(src);
-	i = 0;
-	if (dstsize > 0)
-	{
-		while (i < srclen && i < dstsize - 1)
-		{
-			dest[i] = src[i];
-			i++;
-		}
-		dest[i] = '\0';
-	}
-	return (srclen);
+	runner = dest;
+	while (*runner)
+		runner++;
+	while (*src)
+		*runner++ = *src++;
+	*runner = '\0';
+	return (dest);
 }

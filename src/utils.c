@@ -28,7 +28,7 @@ void	print_error(char *str)
 	write(STDERR_FILENO, "\n", 1);
 }
 
-void	ft_split_clean(char **split)
+void	clean_split(char **split)
 {
 	int	i;
 
@@ -38,4 +38,14 @@ void	ft_split_clean(char **split)
 	while (split[i])
 		free(split[i++]);
 	free(split);
+}
+
+void	free_path(char **path)
+{
+	char	**runner;
+
+	runner = path;
+	while (*runner)
+		free(*runner++);
+	free(path);
 }

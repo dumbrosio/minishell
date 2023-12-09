@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vd-ambro <vd-ambro@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: amatta <amatta@student.42roma.it>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:01:37 by vd-ambro          #+#    #+#             */
-/*   Updated: 2023/08/08 19:49:27 by vd-ambro         ###   ########.fr       */
+/*   Updated: 2023/12/02 13:07:26 by amatta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);
+char	*ft_strcat(char *dest, char *src);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strcpy(char *dest, const char *src);
 char	*ft_strdup(const char *s1);
