@@ -14,9 +14,9 @@
 # include <unistd.h>
 
 # define BUFFERSIZE 4096
-# define MAXARG 50 /* max args in cmd */
+# define MAXARG 50    /* max args in cmd */
 # define MAXFNAME 500 /* max chars in file name */
-# define MAXWORD 500 /* max chars in arg */
+# define MAXWORD 500  /* max chars in arg */
 
 extern int	g_var;
 
@@ -59,7 +59,7 @@ typedef enum e_pstatus
 	P_INWORD,
 	P_NEUTRAL,
 	P_QUOTE,
-}	t_pstatus;
+}			t_pstatus;
 
 typedef struct s_command
 {
@@ -77,106 +77,109 @@ typedef struct s_command
 	pid_t	*wpid;
 	t_token	term;
 	t_token	tk;
-}	t_command;
+}			t_command;
 
 typedef struct s_entry
 {
 	char	*entry;
 	char	*key;
 	char	*value;
-}	t_entry;
+}			t_entry;
 
 /* minishell */
-void	clean_shell(t_shell *shell);
-void	init_shell(t_shell *shell, char **envp);
-void	run_shell(t_shell *shell);
-void	signal_handler(int sig);
+void		clean_shell(t_shell *shell);
+void		init_shell(t_shell *shell, char **envp);
+void		run_shell(t_shell *shell);
+void		signal_handler(int sig);
 
 /*path*/
-char	*create_abs_path(char *path, char *cmd);
-char	*get_abs_path(t_shell *shell, char *cmd);
-char	*set_new_path(t_shell *shell, char *str);
-char	*build_new_path(char *curpath, char *str);
-void	build_path(char **splitted, int i, char *path);
+char		*create_abs_path(char *path, char *cmd);
+char		*get_abs_path(t_shell *shell, char *cmd);
+char		*set_new_path(t_shell *shell, char *str);
+char		*build_new_path(char *curpath, char *str);
+void		build_path(char **splitted, int i, char *path);
 /*debug*/
-void	test_parser(t_shell *shell);
+void		test_parser(t_shell *shell);
 
 /*parser*/
-int		ft_getchar(t_shell *shell);
-t_token	get_token(t_shell *shell);
-void	choose_state(t_shell *shell, t_pstatus *state, t_token *token, int c);
-void	parse_dgreat(t_shell *shell, t_token *token, int c);
-void	parse_dless(t_shell *shell, t_token *token, int c);
-void	parse_inword(t_shell *shell, t_token *token, int c);
-void	parse_neutral(t_shell *shell, t_pstatus *state, t_token *token, int c);
-void	parse_quote(t_shell *shell, t_token *token, int c);
-void	store_char(t_shell *shell, int c);
+int			ft_getchar(t_shell *shell);
+t_token		get_token(t_shell *shell);
+void		choose_state(t_shell *shell, t_pstatus *state, t_token *token,
+				int c);
+void		parse_dgreat(t_shell *shell, t_token *token, int c);
+void		parse_heredoc(t_shell *shell, t_token *token, int c);
+void		parse_inword(t_shell *shell, t_token *token, int c);
+void		parse_neutral(t_shell *shell, t_pstatus *state, t_token *token,
+				int c);
+void		parse_quote(t_shell *shell, t_token *token, int c);
+void		store_char(t_shell *shell, int c);
 
 /* executor */
-int		cmd_special(t_shell *shell, t_command *cmd);
-t_token	command(t_shell *shell, pid_t *wpid, int makepipe, int *pipefdp);
+int			cmd_special(t_shell *shell, t_command *cmd);
+t_token		command(t_shell *shell, pid_t *wpid, int makepipe, int *pipefdp);
 
 /* builtins1 */
-int		ft_echo(t_command *cmd);
-int		ft_env(t_shell *shell);
-int		ft_pwd(t_shell *shell);
-int		is_builtin(t_command *cmd);
-int		exec_builtin(t_shell *shell, t_command *cmd);
+int			ft_echo(t_command *cmd);
+int			ft_env(t_shell *shell);
+int			ft_pwd(t_shell *shell);
+int			is_builtin(t_command *cmd);
+int			exec_builtin(t_shell *shell, t_command *cmd);
 
 /* builtins2 */
-int		other_builtins(t_shell *shell, t_command *cmd);
-int		ft_export(t_shell *shell, t_command *cmd);
-int		export_core(t_shell *shell, t_command *cmd);
-int		ft_unset(t_shell *shell, t_command *cmd);
-int		ft_cd(t_shell *shell, t_command *cmd);
+int			other_builtins(t_shell *shell, t_command *cmd);
+int			ft_export(t_shell *shell, t_command *cmd);
+int			export_core(t_shell *shell, t_command *cmd);
+int			ft_unset(t_shell *shell, t_command *cmd);
+int			ft_cd(t_shell *shell, t_command *cmd);
 
 /* builtins3 */
-int		print_export_entry(t_shell *shell);
-int		ft_exit(t_shell *shell);
-void	update_pwd(t_shell *shell, char *path);
+int			print_export_entry(t_shell *shell);
+int			ft_exit(t_shell *shell);
+void		update_pwd(t_shell *shell, char *path);
 
 /* executor_utils1*/
-int		set_redirect_in(t_shell *shell, t_command *cmd);
-int		set_redirect_out(t_shell *shell, t_command *cmd);
-int		switch_simple_tokens(t_shell *shell, t_command *cmd);
-void	add_word(t_shell *shell, t_command *cmd);
-void	init_command(t_command *cmd, pid_t *wpid, int makepipe, int *pipefdp);
+int			set_redirect_in(t_shell *shell, t_command *cmd);
+int			set_redirect_out(t_shell *shell, t_command *cmd);
+int			switch_simple_tokens(t_shell *shell, t_command *cmd);
+void		add_word(t_shell *shell, t_command *cmd);
+void		init_command(t_command *cmd, pid_t *wpid, int makepipe,
+				int *pipefdp);
 
 /* executor_utils2*/
-int		is_terminal_token(t_token token);
-int		wait_command(t_shell *shell, pid_t pid);
-void	free_command_args(t_command *cmd);
-void	redirect(t_command *cmd);
-void	setpipe(t_command *cmd);
+int			is_terminal_token(t_token token);
+int			wait_command(t_shell *shell, pid_t pid);
+void		free_command_args(t_command *cmd);
+void		redirect(t_command *cmd);
+void		setpipe(t_command *cmd);
 
 /* executor_utils3*/
-pid_t	invoke(t_shell *shell, t_command *cmd);
-void	invoke_child(t_shell *shell, t_command *cmd);
-void	reset_filename(char *filename);
-void	set_exit_status(t_shell *shell, int status);
-void	set_file(t_command *cmd);
+pid_t		invoke(t_shell *shell, t_command *cmd);
+void		invoke_child(t_shell *shell, t_command *cmd);
+void		reset_filename(char *filename);
+void		set_exit_status(t_shell *shell, int status);
+void		set_file(t_command *cmd);
 
 /* env1*/
-char	**ft_getenv_entry(char **env, char *key);
-char	*ft_getenv(t_shell *shell, char *key);
-int		pop_env_entry(char ***env, char *key);
+char		**ft_getenv_entry(char **env, char *key);
+char		*ft_getenv(t_shell *shell, char *key);
+int			pop_env_entry(char ***env, char *key);
 
 /* env2*/
-void	ft_add_entry(char ***env, char *entry);
-int		ft_setenv(t_shell *shell, char *key, char *value);
-int		ft_setenv_entry(char *token, t_entry *entry);
-void	clean_entry(t_entry *entry);
+void		ft_add_entry(char ***env, char *entry);
+int			ft_setenv(t_shell *shell, char *key, char *value);
+int			ft_setenv_entry(char *token, t_entry *entry);
+void		clean_entry(t_entry *entry);
 
 /*utils*/
-char	**copy_environment(char **env);
-void	clean_split(char **split);
-void	print_error(char *str);
-void	free_path(char **path);
+char		**copy_environment(char **env);
+void		clean_split(char **split);
+void		print_error(char *str);
+void		free_path(char **path);
 
 /*expander*/
-void	expand(t_shell *shell);
+void		expand(t_shell *shell);
 
 /*heredoc*/
-int		heredoc(t_shell *shell, t_command *cmd);
+int			heredoc(t_shell *shell, t_command *cmd);
 
 #endif
