@@ -20,8 +20,8 @@ void	test_parser(t_shell *shell)
 				case T_GREAT:
 					printf("T_GREAT\n");
 					break;
-				case T_DGREAT:
-					printf("T_DGREAT\n");
+				case T_APPEND:
+					printf("T_APPEND\n");
 					break;
 				case T_LESS:
 					printf("T_LESS\n");

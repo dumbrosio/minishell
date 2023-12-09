@@ -33,7 +33,7 @@ int	switch_simple_tokens(t_shell *shell, t_command *cmd)
 			return (2);
 		return (1);
 	}
-	else if (cmd->tk == T_GREAT || cmd->tk == T_DGREAT)
+	else if (cmd->tk == T_GREAT || cmd->tk == T_APPEND)
 	{
 		if (set_redirect_out(shell, cmd))
 			return (2);
@@ -92,6 +92,6 @@ int	set_redirect_out(t_shell *shell, t_command *cmd)
 	}
 	cmd->dstfd = -1;
 	ft_strcpy(cmd->dstfile, shell->buffer);
-	cmd->append = (cmd->tk == T_DGREAT);
+	cmd->append = (cmd->tk == T_APPEND);
 	return (0);
 }

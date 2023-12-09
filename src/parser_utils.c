@@ -25,8 +25,8 @@ void	choose_state(t_shell *shell, t_pstatus *state, t_token *token, int c)
 {
 	if (*state == P_NEUTRAL)
 		parse_neutral(shell, state, token, c);
-	else if (*state == P_DGREAT)
-		parse_dgreat(shell, token, c);
+	else if (*state == P_APPEND)
+		parse_append(shell, token, c);
 	else if (*state == P_HEREDOC)
 		parse_heredoc(shell, token, c);
 	else if (*state == P_QUOTE)
@@ -45,7 +45,7 @@ void	parse_neutral(t_shell *shell, t_pstatus *state, t_token *token, int c)
 	else if (c == ' ' || c == '\t')
 		return ;
 	else if (c == '>')
-		*state = P_DGREAT;
+		*state = P_APPEND;
 	else if (c == '<')
 		*state = P_HEREDOC;
 	else if (c == '"' || c == '\'')

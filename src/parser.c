@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-void	parse_dgreat(t_shell *shell, t_token *token, int c)
+void	parse_append(t_shell *shell, t_token *token, int c)
 {
 	if (c == '>' && shell->command[shell->command_pos - 2] == '>')
-		*token = T_DGREAT;
+		*token = T_APPEND;
 	else if (shell->command[shell->command_pos - 2] == '>')
 	{
 		*token = T_GREAT;

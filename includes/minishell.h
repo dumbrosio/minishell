@@ -40,7 +40,7 @@ typedef struct s_shell
 
 typedef enum e_token
 {
-	T_DGREAT,
+	T_APPEND,
 	T_HEREDOC,
 	T_EOF,
 	T_ERROR,
@@ -54,7 +54,7 @@ typedef enum e_token
 
 typedef enum e_pstatus
 {
-	P_DGREAT,
+	P_APPEND,
 	P_HEREDOC,
 	P_INWORD,
 	P_NEUTRAL,
@@ -106,7 +106,7 @@ int			ft_getchar(t_shell *shell);
 t_token		get_token(t_shell *shell);
 void		choose_state(t_shell *shell, t_pstatus *state, t_token *token,
 				int c);
-void		parse_dgreat(t_shell *shell, t_token *token, int c);
+void		parse_append(t_shell *shell, t_token *token, int c);
 void		parse_heredoc(t_shell *shell, t_token *token, int c);
 void		parse_inword(t_shell *shell, t_token *token, int c);
 void		parse_neutral(t_shell *shell, t_pstatus *state, t_token *token,
