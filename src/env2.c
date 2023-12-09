@@ -4,6 +4,9 @@ void	ft_add_entry(char ***env, char *entry)
 {
 	int		i;
 	char	**tmp;
+	char	*entry_dup;
+
+	entry_dup = ft_strdup(entry);
 
 	i = 0;
 	while ((*env)[i])
@@ -15,8 +18,9 @@ void	ft_add_entry(char ***env, char *entry)
 		tmp[i] = (*env)[i];
 		i++;
 	}
-	tmp[i++] = ft_strdup(entry);
+	tmp[i++] = entry_dup;
 	tmp[i] = NULL;
+	free(*env);
 	*env = tmp;
 }
 
@@ -33,36 +37,57 @@ int	ft_setenv(t_shell *shell, char *key, char *value)
 	ft_strcat(new, value);
 	entry = ft_getenv_entry(shell->envp, key);
 	if (!*entry)
+	{
 		entry = ft_getenv_entry(shell->localenvp, key);
+	}
 	if (*entry)
 	{
 		tmp = *entry;
 		*entry = ft_strdup(new);
-		free (new);
 		free (tmp);
+		free (new);
 		return (0);
 	}
 	else
+	{
 		ft_add_entry(&shell->localenvp, new);
+		free(new);
+	}
 	return (0);
 }
 
-void	update_pwd(t_shell *shell, char *path)
+void	clean_entry(t_entry *entry)
 {
-	char	*pwd;
-	char	*oldpwd;
-
-	if (*ft_getenv_entry(shell->envp, "OLDPWD"))
-		ft_setenv(shell, "OLDPWD", ft_getenv(shell, "PWD"));
-	else
-	{
-		pwd = ft_strdup(ft_getenv(shell, "PWD"));
-		oldpwd = (char *)malloc(sizeof(char) * ft_strlen(pwd) + 8);
-		ft_strcat(oldpwd, "OLDPWD=");
-		ft_strcat(oldpwd, pwd);
-		ft_add_entry(&shell->envp, oldpwd);
-		free(pwd);
-		free(oldpwd);
-	}
-	ft_setenv(shell, "PWD", path);
+	free(entry->entry);
+	free(entry->key);
+	free(entry->value);
 }
+
+int	ft_setenv_entry(char *token, t_entry *entry)
+{
+	char	*sep;
+	int		pos;
+	size_t	token_len;
+
+	token_len = ft_strlen(token);
+	if (token[0] == '=' || ft_isdigit(token[0]))
+		return (1);
+	entry->entry = ft_strdup(token);
+	sep = ft_strchr(token, '=');
+	if (!sep)
+	{
+		entry->key = ft_strdup(token);
+		entry->value = NULL;
+		clean_entry(entry);
+		return (1);
+	}
+	pos = (int)(sep - token);
+	entry->key = (char *)malloc(sizeof(char) * (pos + 1));
+	entry->value = (char *)malloc(sizeof(char) * (token_len - pos));
+	ft_strncpy(entry->key, token, pos);
+	entry->key[pos] = '\0';
+	ft_strcpy(entry->value, token + pos + 1);
+	entry->value[token_len - pos - 1] = '\0';
+	return (0);
+}
+

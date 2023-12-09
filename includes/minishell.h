@@ -96,8 +96,7 @@ char	*create_abs_path(char *path, char *cmd);
 char	*get_abs_path(t_shell *shell, char *cmd);
 char	*set_new_path(t_shell *shell, char *str);
 char	*build_new_path(char *curpath, char *str);
-void 	build_path(char **splitted, int i,char *path);
-
+void	build_path(char **splitted, int i, char *path);
 /*debug*/
 void	test_parser(t_shell *shell);
 
@@ -121,14 +120,19 @@ int		ft_echo(t_command *cmd);
 int		ft_env(t_shell *shell);
 int		ft_pwd(t_shell *shell);
 int		is_builtin(t_command *cmd);
-int 	exec_builtin(t_shell *shell, t_command *cmd);
+int		exec_builtin(t_shell *shell, t_command *cmd);
 
 /* builtins2 */
-int		ft_cd(t_shell *shell,t_command *cmd);
-int		ft_exit(t_shell *shell);
-int		ft_export(t_shell *shell,t_command *cmd);
-int		ft_unset(t_shell *shell,t_command *cmd);
 int		other_builtins(t_shell *shell, t_command *cmd);
+int		ft_export(t_shell *shell, t_command *cmd);
+int		export_core(t_shell *shell, t_command *cmd);
+int		ft_unset(t_shell *shell, t_command *cmd);
+int		ft_cd(t_shell *shell, t_command *cmd);
+
+/* builtins3 */
+int		print_export_entry(t_shell *shell);
+int		ft_exit(t_shell *shell);
+void	update_pwd(t_shell *shell, char *path);
 
 /* executor_utils1*/
 int		set_redirect_in(t_shell *shell, t_command *cmd);
@@ -159,7 +163,8 @@ int		pop_env_entry(char ***env, char *key);
 /* env2*/
 void	ft_add_entry(char ***env, char *entry);
 int		ft_setenv(t_shell *shell, char *key, char *value);
-void	update_pwd(t_shell *shell, char *path);
+int		ft_setenv_entry(char *token, t_entry *entry);
+void	clean_entry(t_entry *entry);
 
 /*utils*/
 char	**copy_environment(char **env);
