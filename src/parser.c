@@ -15,7 +15,7 @@ void	parse_dgreat(t_shell *shell, t_token *token, int c)
 void	parse_dless(t_shell *shell, t_token *token, int c)
 {
 	if (c == '<' && shell->command[shell->command_pos - 2] == '<')
-		*token = T_DLESS;
+		*token = T_HEREDOC;
 	else if (shell->command[shell->command_pos - 2] == '<')
 	{
 		*token = T_LESS;

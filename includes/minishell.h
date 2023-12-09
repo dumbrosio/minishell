@@ -41,7 +41,7 @@ typedef struct s_shell
 typedef enum e_token
 {
 	T_DGREAT,
-	T_DLESS,
+	T_HEREDOC,
 	T_EOF,
 	T_ERROR,
 	T_GREAT,
@@ -55,7 +55,7 @@ typedef enum e_token
 typedef enum e_pstatus
 {
 	P_DGREAT,
-	P_DLESS,
+	P_HEREDOC,
 	P_INWORD,
 	P_NEUTRAL,
 	P_QUOTE,

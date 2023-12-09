@@ -27,7 +27,7 @@ int	switch_simple_tokens(t_shell *shell, t_command *cmd)
 			return (2);
 		return (1);
 	}
-	else if (cmd->tk == T_DLESS)
+	else if (cmd->tk == T_HEREDOC)
 	{
 		if (heredoc(shell, cmd))
 			return (2);

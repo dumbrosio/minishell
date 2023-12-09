@@ -26,8 +26,8 @@ void	test_parser(t_shell *shell)
 				case T_LESS:
 					printf("T_LESS\n");
 					break;
-				case T_DLESS:
-					printf("T_DLESS\n");
+				case T_HEREDOC:
+					printf("T_HEREDOC\n");
 					break;
 				case T_NL:
 					printf("T_NL\n");
