@@ -174,6 +174,9 @@ void	print_error(char *str);
 void	free_path(char **path);
 
 /*expander*/
-void		expand(t_shell *shell);
+void	expand(t_shell *shell);
+
+/*heredoc*/
+int		heredoc(t_shell *shell, t_command *cmd);
 
 #endif
