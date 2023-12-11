@@ -6,6 +6,8 @@ int	set_heredoc(t_shell *shell, t_command *cmd)
 	char	*tmp;
 	int		tmp_file;
 
+	if (get_token(shell, cmd) != T_WORD)
+		return (write_error(shell));
 	if (shell->expand)
 		expand(shell);
 	tmp_file = open("/tmp/ms_tmp", O_CREAT | O_TRUNC | O_RDWR, 0600);
@@ -32,7 +34,7 @@ void	copy_tmp_arg(t_command *cmd)
 		cmd->argv[cmd->argc] = malloc(ft_strlen(cmd->tmp_arg) + 1);
 		if (cmd->argv[cmd->argc] == NULL)
 		{
-			print_error("Out of arg memory");
+			print_error("Out of memory");
 			return ;
 		}
 		ft_strcpy(cmd->argv[cmd->argc], cmd->tmp_arg);

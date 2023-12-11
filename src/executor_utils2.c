@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	is_terminal_token(t_token token)
+int	is_terminal_tk(t_token token)
 {
 	if (token == T_PIPE || token == T_NL)
 		return (1);
@@ -40,8 +40,8 @@ int	wait_command(t_shell *shell, pid_t pid)
 		wpid = waitpid(-1, &status, 0);
 		set_exit_status(shell, status);
 	}
-	while (waitpid(-1, &status, WUNTRACED) != -1);
-	set_exit_status(shell, status);
+	while (waitpid(-1, &status, WUNTRACED) != -1)
+		set_exit_status(shell, status);
 	return (1);
 }
 

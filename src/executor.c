@@ -6,7 +6,7 @@ t_token	command(t_shell *shell, pid_t *wpid, int makepipe, int *pipefdp)
 	int			result;
 
 	init_command(&cmd, wpid, makepipe, pipefdp);
-	while (1)
+	while (42)
 	{
 		cmd.tk = get_token(shell, &cmd);
 		result = switch_tokens(shell, &cmd);
@@ -14,14 +14,14 @@ t_token	command(t_shell *shell, pid_t *wpid, int makepipe, int *pipefdp)
 			break ;
 		else if (result == 1)
 			continue ;
-		if (is_terminal_token(cmd.tk))
+		if (is_terminal_tk(cmd.tk))
 		{
 			result = cmd_special(shell, &cmd);
 			if (result)
 				break ;
 			return (cmd.term);
 		}
-		exit(EXIT_SUCCESS);
+		return (T_ERROR);
 	}
 	return (T_ERROR);
 }

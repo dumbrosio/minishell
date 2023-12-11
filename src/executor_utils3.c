@@ -25,4 +25,6 @@ void	set_exit_status(t_shell *shell, int status)
 {
 	if (WIFEXITED(status))
 		shell->exit_code = WEXITSTATUS(status);
+	else if (errno == 2)
+		shell->exit_code = 130;
 }

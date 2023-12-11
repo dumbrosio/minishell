@@ -160,7 +160,7 @@ void		add_word_token(t_shell *shell, t_command *cmd);
 void		init_command(t_command *cmd, pid_t *wpid, int makepipe, int *pipefdp);
 
 /* executor_utils2*/
-int			is_terminal_token(t_token token);
+int			is_terminal_tk(t_token token);
 int			wait_command(t_shell *shell, pid_t pid);
 void		free_command_args(t_command *cmd);
 void		redirect(t_command *cmd);

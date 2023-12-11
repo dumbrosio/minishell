@@ -4,7 +4,7 @@ void	add_last_exit(t_shell *shell, int *i, int *j)
 {
 	char	*buffer;
 	char	*value;
-	int		len;
+	size_t	len;
 
 	buffer = shell->buffer;
 	(*i) = *i + 1;
@@ -15,7 +15,8 @@ void	add_last_exit(t_shell *shell, int *i, int *j)
 	len = 0;
 	while (value[len])
 		len++;
-	(*i) += len;
+	 if (*i + len < ft_strlen(buffer))
+		(*i) += len;
 	ft_memcpy(buffer + *j, value, ft_strlen(value));
 	(*j) += ft_strlen(value);
 	ft_memcpy(buffer + *j, "\0", 1);
@@ -31,7 +32,8 @@ void	add_expanded_value(t_shell *shell, char *buffer_copy, int *i, int *j)
 	int		key_len;
 
 	buffer = shell->buffer;
-	(*i) = *i + 1;
+	if (buffer_copy[*i] != '\0')
+		(*i)++;
 	key_len = 0;
 	while (ft_isalnum(buffer_copy[*i + key_len]))
 		key_len++;
