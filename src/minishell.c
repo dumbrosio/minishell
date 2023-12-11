@@ -13,6 +13,7 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->localenvp = (char **)malloc(sizeof(char *));
 	shell->localenvp[0] = NULL;
 	shell->expand = 1;
+	shell->token_error = 1;
 }
 
 void	run_shell(t_shell *shell)
@@ -49,6 +50,8 @@ void	clean_shell(t_shell *shell)
 	free(shell->buffer);
 	clean_split(shell->envp);
 	clean_split(shell->localenvp);
+	if (access("/tmp/ms_tmp", F_OK) == 0)
+		unlink("/tmp/ms_tmp");
 }
 
 void	signal_handler(int sig)

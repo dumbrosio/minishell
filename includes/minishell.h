@@ -36,6 +36,8 @@ typedef struct s_shell
 	pid_t	main_pid;
 	size_t	buffer_pos;
 	size_t	command_pos;
+	int		token_error;
+	int		unset_path;
 }			t_shell;
 
 typedef enum e_token
@@ -77,6 +79,7 @@ typedef struct s_command
 	pid_t	*wpid;
 	t_token	term;
 	t_token	tk;
+	char	tmp_arg[MAXWORD];
 }			t_command;
 
 typedef struct s_entry
@@ -181,5 +184,6 @@ void		expand(t_shell *shell);
 
 /*heredoc*/
 int			heredoc(t_shell *shell, t_command *cmd);
+void		copy_tmp_arg(t_command *cmd);
 
 #endif

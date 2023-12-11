@@ -7,7 +7,6 @@ void	parse_append(t_shell *shell, t_token *token, int c)
 	else if (shell->command[shell->command_pos - 2] == '>')
 	{
 		*token = T_GREAT;
-		//ungetc(c, stdin);
 		shell->command_pos--;
 	}
 }
@@ -19,7 +18,6 @@ void	parse_heredoc(t_shell *shell, t_token *token, int c)
 	else if (shell->command[shell->command_pos - 2] == '<')
 	{
 		*token = T_LESS;
-		//ungetc(c, stdin);
 		shell->command_pos--;
 	}
 }
@@ -31,19 +29,16 @@ void	parse_quote(t_shell *shell, t_token *token, int c)
 	quote = shell->command[shell->command_pos - 2];
 	while (c != quote && c != 0)
 	{
-		if (c == '\\')
-		{
-			c = ft_getchar(shell);
-			if (c == EOF)
-				c = '\\';
 			store_char(shell, c);
-		}
-		store_char(shell, c);
-		c = shell->command[shell->command_pos++];
+			c = shell->command[shell->command_pos++];
 	}
 	if (c == quote)
 	{
 		store_char(shell, '\0');
+		if (ft_strchr(" |><", shell->command[shell->command_pos]))
+			shell->token_error = 0;
+		else
+			shell->token_error = 1;
 		*token = T_WORD;
 	}
 	else if (*token == T_NOTOKEN)
@@ -74,11 +69,14 @@ t_token	get_token(t_shell *shell)
 	token = T_NOTOKEN;
 	shell->buffer_pos = 0;
 	c = shell->command[shell->command_pos++];
+	shell->token_error = 1;
 	while (token == T_NOTOKEN || c != 0)
 	{
 		choose_state(shell, &state, &token, c);
 		if (c == 0)
 			break ;
+		if ((state == P_INWORD && token == T_WORD && c == ' '))
+			shell->token_error = 0;
 		if (token == T_NOTOKEN)
 			c = shell->command[shell->command_pos++];
 		else
@@ -86,6 +84,7 @@ t_token	get_token(t_shell *shell)
 	}
 	if (token != T_NOTOKEN)
 		return (token);
+
 	if (c == 0)
 		return (T_NL);
 	return (T_ERROR);
