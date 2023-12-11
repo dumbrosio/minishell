@@ -7,7 +7,6 @@ void	ft_add_entry(char ***env, char *entry)
 	char	*entry_dup;
 
 	entry_dup = ft_strdup(entry);
-
 	i = 0;
 	while ((*env)[i])
 		i++;
@@ -24,6 +23,13 @@ void	ft_add_entry(char ***env, char *entry)
 	*env = tmp;
 }
 
+void	strcat_union(char *str, char *key, char *value)
+{
+	ft_strcat(str, key);
+	ft_strcat(str, "=");
+	ft_strcat(str, value);
+}
+
 int	ft_setenv(t_shell *shell, char *key, char *value)
 {
 	char	**entry;
@@ -32,14 +38,10 @@ int	ft_setenv(t_shell *shell, char *key, char *value)
 
 	new = (char *)malloc(sizeof(char) * (ft_strlen(key)+ ft_strlen(value) + 2));
 	new[0] = 0;
-	ft_strcat(new, key);
-	ft_strcat(new, "=");
-	ft_strcat(new, value);
+	strcat_union(new, key, value);
 	entry = ft_getenv_entry(shell->envp, key);
 	if (!*entry)
-	{
 		entry = ft_getenv_entry(shell->localenvp, key);
-	}
 	if (*entry)
 	{
 		tmp = *entry;
@@ -90,4 +92,3 @@ int	ft_setenv_entry(char *token, t_entry *entry)
 	entry->value[token_len - pos - 1] = '\0';
 	return (0);
 }
-

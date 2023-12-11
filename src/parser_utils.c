@@ -60,3 +60,16 @@ void	parse_neutral(t_shell *shell, t_pstatus *state, t_token *token, int c)
 		store_char(shell, c);
 	}
 }
+void	parse_inword(t_shell *shell, t_token *token, int c)
+{
+	if (c == '|' || c == '<' || c == 0 || c == '"'
+		|| c == '>' || c == '\n' || c == ' ' || c == '\t' || c == '\'')
+	{
+		if (c != ' ' && c != '\t')
+			shell->command_pos--;
+		store_char(shell, '\0');
+		*token = T_WORD;
+	}
+	else
+		store_char(shell, c);
+}

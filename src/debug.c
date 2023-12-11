@@ -2,14 +2,15 @@
 
 void	test_parser(t_shell *shell)
 {
-	int	next_command;
+	int			next_command;
+	t_command	cmd;
 	while((shell->command = readline(shell->prompt)))
 	{
 		shell->command_pos = 0;
 		next_command = 0;
 		while (next_command == 0)
 		{
-			switch (get_token(shell))
+			switch (get_token(shell,&cmd))
 			{
 				case T_WORD:
 					printf("T_WORD (%s)\n", shell->buffer);

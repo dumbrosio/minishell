@@ -12,65 +12,72 @@ void	init_command(t_command *cmd, pid_t *wpid, int makepipe, int *pipefdp)
 	cmd->makepipe = makepipe;
 	cmd->wpid = wpid;
 	cmd->pipefdp = pipefdp;
+	cmd->tmp_arg[0] = 0;
 }
 
-int	switch_simple_tokens(t_shell *shell, t_command *cmd)
+int	switch_tokens(t_shell *shell, t_command *cmd)
 {
 	if (cmd->tk == T_WORD)
 	{
-		add_word(shell, cmd);
+		add_word_token(shell, cmd);
 		return (1);
 	}
 	else if (cmd->tk == T_LESS)
 	{
-		if (set_redirect_in(shell, cmd))
+		if (set_red_in(shell, cmd))
 			return (2);
 		return (1);
 	}
 	else if (cmd->tk == T_HEREDOC)
 	{
-		if (heredoc(shell, cmd))
+		if (set_heredoc(shell, cmd))
 			return (2);
 		return (1);
 	}
 	else if (cmd->tk == T_GREAT || cmd->tk == T_APPEND)
 	{
-		if (set_redirect_out(shell, cmd))
+		if (set_red_out(shell, cmd))
 			return (2);
 		return (1);
 	}
 	return (0);
 }
 
-void	add_word(t_shell *shell, t_command *cmd)
+void	add_word_token(t_shell *shell, t_command *cmd)
 {
 	if (cmd->argc >= MAXARG - 1)
 	{
-		print_error("Too many args");
+		print_error("Too args");
 		return ;
 	}
 	if (shell->expand)
 		expand(shell);
-	cmd->argv[cmd->argc] = malloc(strlen(shell->buffer) + 1);
-	if (cmd->argv[cmd->argc] == NULL)
+	ft_strcat(cmd->tmp_arg, shell->buffer);
+	if (shell->token_error != 1)
 	{
-		print_error("Out of arg memory");
-		return ;
+		copy_tmp_arg(cmd);
 	}
-	ft_strcpy(cmd->argv[cmd->argc], shell->buffer);
-	cmd->argc++;
 }
 
-int	set_redirect_in(t_shell *shell, t_command *cmd)
+int	set_red_in(t_shell *shell, t_command *cmd)
 {
-	if (cmd->makepipe)
+	char	*abs_path;
+	char	buffer[4096];
+
+	buffer[0] = 0;
+	if (get_token(shell, cmd) != T_WORD)
+		return (write_error(shell));
+	if (shell->expand)
+		expand(shell);
+	if (shell->buffer[0] != '/')
+		ft_strcat(buffer, "./");
+	ft_strcat(buffer, shell->buffer);
+	abs_path = get_abs_path(shell, buffer);
+	if (access(abs_path, F_OK) != 0)
 	{
-		print_error("Extra <");
-		return (1);
-	}
-	if (get_token(shell) != T_WORD)
-	{
-		print_error("Illegal <");
+		write(2, "minishell: ", 11);
+		write(2, shell->buffer, ft_strlen(shell->buffer));
+		write(2, ": No such file or directory\n", 28);
 		return (1);
 	}
 	cmd->srcfd = -1;
@@ -78,18 +85,20 @@ int	set_redirect_in(t_shell *shell, t_command *cmd)
 	return (0);
 }
 
-int	set_redirect_out(t_shell *shell, t_command *cmd)
+int	set_red_out(t_shell *shell, t_command *cmd)
 {
-	if (cmd->dstfd != STDOUT_FILENO)
-	{
-		print_error("Extra > or >>");
-		return (1);
-	}
-	if (get_token(shell) != T_WORD)
-	{
-		print_error("Illegal > or >>");
-		return (1);
-	}
+	int	flags;
+
+	if (get_token(shell, cmd) != T_WORD)
+		return (write_error(shell));
+	if (shell->expand)
+		expand(shell);
+	flags = O_CREAT;
+	if (cmd->tk == T_APPEND)
+		flags |= O_APPEND;
+	else
+		flags |= O_TRUNC;
+	close(open(shell->buffer, flags, 0644));
 	cmd->dstfd = -1;
 	ft_strcpy(cmd->dstfile, shell->buffer);
 	cmd->append = (cmd->tk == T_APPEND);

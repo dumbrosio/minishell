@@ -18,30 +18,47 @@ void	init_shell(t_shell *shell, char **envp)
 
 void	run_shell(t_shell *shell)
 {
+	char	*command;
+	char	**split_command;
+	int		i;
+
+	command = readline(shell->prompt);
+	while (command)
+	{
+		if (g_var == 130 || g_var == 131)
+		{
+			shell->exit_code = g_var;
+			g_var = 0;
+		}
+		add_history(command);
+		split_command = ft_quote_split(command, ";", "'\"");
+		i = 0;
+		while (split_command[i])
+		{
+			shell->command = split_command[i++];
+			exec_command(shell);
+		}
+		clean_split(split_command);
+		free(command);
+		command = readline(shell->prompt);
+	}
+}
+
+void	exec_command(t_shell *shell)
+{
 	pid_t	pid;
 	t_token	term;
 
-	term = T_NL;
-	shell->command = readline(shell->prompt);
-	while (shell->command)
+	shell->command_pos = 0;
+	term = command(shell, &pid, 0, NULL);
+	if (term == T_ERROR)
 	{
-		if (term == T_NL)
-		{
-			shell->command_pos = 0;
-			if (ft_strlen(shell->command))
-				add_history(shell->command);
-		}
-		term = command(shell, &pid, 0, NULL);
-		if (term == T_ERROR)
-		{
-			print_error("Bad command");
-			term = T_NL;
-		}
-		else if (pid > 0)
-			wait_command(shell, pid);
-		free(shell->command);
-		shell->command = readline(shell->prompt);
+		shell->exit_code = 1;
+		print_error("Bad command");
+		term = T_NL;
 	}
+	else if (pid > 0)
+		wait_command(shell, pid);
 }
 
 void	clean_shell(t_shell *shell)
@@ -52,18 +69,6 @@ void	clean_shell(t_shell *shell)
 	clean_split(shell->localenvp);
 	if (access("/tmp/ms_tmp", F_OK) == 0)
 		unlink("/tmp/ms_tmp");
-}
-
-void	signal_handler(int sig)
-{
-	if (sig == SIGINT)
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		g_var = 1;
-	}
 }
 
 int	main(int argc, char **argv, char **envp)

@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-int	heredoc(t_shell *shell, t_command *cmd)
+int	set_heredoc(t_shell *shell, t_command *cmd)
 {
-	char *line;
-	char *tmp;
-	int tmp_file;
+	char	*line;
+	char	*tmp;
+	int		tmp_file;
 
 	if (shell->expand)
 		expand(shell);

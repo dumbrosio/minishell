@@ -1,6 +1,29 @@
 #include "minishell.h"
 
-void	add_expanded_env_var(t_shell *shell, char *buffer_copy, int *i, int *j)
+void	add_last_exit(t_shell *shell, int *i, int *j)
+{
+	char	*buffer;
+	char	*value;
+	int		len;
+
+	buffer = shell->buffer;
+	(*i) = *i + 1;
+	if (shell->buffer[*i] == '?')
+		value = ft_itoa(shell->exit_code);
+	else
+		value = ft_itoa(shell->main_pid);
+	len = 0;
+	while (value[len])
+		len++;
+	(*i) += len;
+	ft_memcpy(buffer + *j, value, ft_strlen(value));
+	(*j) += ft_strlen(value);
+	ft_memcpy(buffer + *j, "\0", 1);
+	(*j)++;
+	free(value);
+}
+
+void	add_expanded_value(t_shell *shell, char *buffer_copy, int *i, int *j)
 {
 	char	*buffer;
 	char	*key;
@@ -24,9 +47,9 @@ void	add_expanded_env_var(t_shell *shell, char *buffer_copy, int *i, int *j)
 
 void	expand(t_shell *shell)
 {
-	char *buffer_copy;
-	int i;
-	int j;
+	char	*buffer_copy;
+	int		i;
+	int		j;
 
 	buffer_copy = ft_strdup(shell->buffer);
 	i = 0;
@@ -35,8 +58,12 @@ void	expand(t_shell *shell)
 	{
 		if (buffer_copy[i] != '$')
 			shell->buffer[j++] = buffer_copy[i++];
+		else if (buffer_copy[i + 1] == ' ' || buffer_copy[i + 1] == 0)
+			shell->buffer[j++] = buffer_copy[i++];
+		else if (buffer_copy[i + 1] == '?' || buffer_copy[i + 1] == '$')
+			add_last_exit(shell, &i, &j);
 		else
-			add_expanded_env_var(shell, buffer_copy, &i, &j);
+			add_expanded_value(shell, buffer_copy, &i, &j);
 	}
 	shell->buffer[j] = '\0';
 	free(buffer_copy);

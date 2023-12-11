@@ -9,11 +9,6 @@ int	is_terminal_token(t_token token)
 
 void	redirect(t_command *cmd)
 {
-	// if (cmd->srcfd == STDIN_FILENO))
-	// {
-	// 	ft_strcpy(cmd->srcfile, "/dev/null");
-	// 	cmd->srcfd = -1;
-	// }
 	if (cmd->srcfile[0] != '\0')
 		cmd->srcfd = open(cmd->srcfile, O_RDONLY, 0);
 	dup2(cmd->srcfd, STDIN_FILENO);
@@ -50,7 +45,7 @@ int	wait_command(t_shell *shell, pid_t pid)
 	return (1);
 }
 
-void	setpipe(t_command *cmd)
+void	set_pipe(t_command *cmd)
 {
 	pipe(cmd->pfd);
 	*cmd->pipefdp = cmd->pfd[1];

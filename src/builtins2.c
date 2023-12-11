@@ -33,9 +33,10 @@ int	ft_export(t_shell *shell, t_command *cmd)
 		export_core(shell, cmd);
 	return (0);
 }
+
 int	export_core(t_shell *shell, t_command *cmd)
 {
-	int 	i;
+	int		i;
 	char	**env_entry;
 	t_entry	entry;
 
@@ -58,7 +59,7 @@ int	export_core(t_shell *shell, t_command *cmd)
 		clean_entry(&entry);
 		i++;
 	}
-return (0);
+	return (0);
 }
 
 int	ft_unset(t_shell *shell, t_command *cmd)

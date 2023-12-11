@@ -40,12 +40,11 @@ void	clean_split(char **split)
 	free(split);
 }
 
-void	free_path(char **path)
+int	write_error(t_shell *shell)
 {
-	char	**runner;
-
-	runner = path;
-	while (*runner)
-		free(*runner++);
-	free(path);
+	write(2, "minishell: ", 11);
+	write(2, "errore di sintassi vicino al token non atteso \"", 47);
+	write(2, shell->buffer, ft_strlen(shell->buffer));
+	write(2, "\"\n", 2);
+	return (1);
 }

@@ -29,8 +29,8 @@ void	parse_quote(t_shell *shell, t_token *token, int c)
 	quote = shell->command[shell->command_pos - 2];
 	while (c != quote && c != 0)
 	{
-			store_char(shell, c);
-			c = shell->command[shell->command_pos++];
+		store_char(shell, c);
+		c = shell->command[shell->command_pos++];
 	}
 	if (c == quote)
 	{
@@ -45,31 +45,23 @@ void	parse_quote(t_shell *shell, t_token *token, int c)
 		*token = T_ERROR;
 }
 
-void	parse_inword(t_shell *shell, t_token *token, int c)
+
+void	init_token(t_shell *shell, t_pstatus *state, t_token *token, int *c)
 {
-	if (c == '|' || c == '<' || c == 0 || c == '"'
-		|| c == '>' || c == '\n' || c == ' ' || c == '\t' || c == '\'')
-	{
-		if (c != ' ' && c != '\t')
-			shell->command_pos--;
-		store_char(shell, '\0');
-		*token = T_WORD;
-	}
-	else
-		store_char(shell, c);
+	shell->buffer_pos = 0;
+	shell->token_error = 1;
+	*state = P_NEUTRAL;
+	*token = T_NOTOKEN;
+	*c = shell->command[shell->command_pos++];
 }
 
-t_token	get_token(t_shell *shell)
+t_token	get_token(t_shell *shell, t_command *cmd)
 {
 	t_pstatus	state;
 	t_token		token;
 	int			c;
 
-	state = P_NEUTRAL;
-	token = T_NOTOKEN;
-	shell->buffer_pos = 0;
-	c = shell->command[shell->command_pos++];
-	shell->token_error = 1;
+	init_token(shell, &state, &token, &c);
 	while (token == T_NOTOKEN || c != 0)
 	{
 		choose_state(shell, &state, &token, c);
@@ -84,7 +76,7 @@ t_token	get_token(t_shell *shell)
 	}
 	if (token != T_NOTOKEN)
 		return (token);
-
+	copy_tmp_arg(cmd);
 	if (c == 0)
 		return (T_NL);
 	return (T_ERROR);

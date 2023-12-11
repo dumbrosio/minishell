@@ -6,7 +6,7 @@
 /*   By: amatta <amatta@student.42roma.it>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 16:01:37 by vd-ambro          #+#    #+#             */
-/*   Updated: 2023/12/02 13:07:26 by amatta           ###   ########.fr       */
+/*   Updated: 2023/12/11 16:53:06 by amatta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
+char	**ft_quote_split(char *str, char *delims, char *quotes);
+
 typedef struct s_list
 {
 	void			*content;
