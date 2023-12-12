@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 char	*build_abs_path(char *path, char *command)
 {
 	int		path_len;

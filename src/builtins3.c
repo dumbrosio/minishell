@@ -1,55 +1,110 @@
 #include "minishell.h"
 
-int	ft_exit(t_shell *shell)
+int	ft_unset(t_shell *shell, t_command *cmd)
 {
-	free(shell->command);
-	clean_shell(shell);
-	_exit(EXIT_SUCCESS);
+	int		var_index;
+	int		arg;
+	char	**new_envp;
+
+	arg = 1;
+	while (arg < cmd->argc)
+	{
+		var_index = find_var_index(shell, cmd->argv[arg]);
+		if (var_index == -1)
+		{
+			arg++;
+			continue ;
+		}
+		 new_envp = create_new_envp(shell, var_index);
+		if (new_envp == NULL)
+			return (1);
+
+		free(shell->envp[var_index]);
+		free(shell->envp);
+		shell->envp = new_envp;
+		arg++;
+	}
+	return (0);
 }
 
-int	print_export_entry(t_shell *shell)
+int	find_var_index(t_shell *shell, char *key)
 {
-	int		i;
-	char	**copied_envp;
-	char	*env_var;
-	char	*key;
-	char	*value;
+	int i = 0;
 
-	i = 0;
-	copied_envp = shell->envp;
-	while (copied_envp[i] != NULL )
+	while (shell->envp[i] != NULL)
 	{
-		env_var = ft_strdup(copied_envp[i]);
-		key = env_var;
-		value = ft_strchr(key, '=');
-		if (value != NULL)
+		if (ft_strncmp(shell->envp[i], key, ft_strlen(key)) == 0 && shell->envp[i][ft_strlen(key)] == '=')
 		{
-			*value = '\0';
-			value++;
-			printf("declare -x %s=\"%s\"\n", key, value);
+			return i;
 		}
 		i++;
-		free(env_var);
 	}
-	return (1);
+	return (-1);
+}
+char	**create_new_envp(t_shell *shell, int var_index)
+{
+	int		i;
+	int		j;
+	int		envp_len;
+	char	**new_envp;
+
+	i = 0;
+	j = 0;
+	envp_len = 0;
+	while (shell->envp[envp_len] != NULL)
+		envp_len++;
+	new_envp = (char **)malloc(sizeof(char *) * (envp_len + 1));
+	if (new_envp == NULL)
+		return (NULL);
+	while (shell->envp[i] != NULL)
+	{
+		if (i != var_index)
+		{
+			new_envp[j] = shell->envp[i];
+			j++;
+		}
+		i++;
+	}
+	new_envp[j] = NULL;
+	return new_envp;
 }
 
-void	update_pwd(t_shell *shell, char *path)
+int	check_exit_arg(int *arg, t_shell *shell, t_command *cmd, int *i)
 {
-	char	*pwd;
-	char	*oldpwd;
-
-	if (*ft_getenv_entry(shell->envp, "OLDPWD"))
-		ft_setenv(shell, "OLDPWD", ft_getenv(shell, "PWD"));
-	else
+	if (!ft_isdigit(cmd->argv[1][(*i)++]))
 	{
-		pwd = ft_strdup(ft_getenv(shell, "PWD"));
-		oldpwd = (char *)malloc(sizeof(char) * ft_strlen(pwd) + 8);
-		ft_strcat(oldpwd, "OLDPWD=");
-		ft_strcat(oldpwd, pwd);
-		ft_add_entry(&shell->envp, oldpwd);
-		free(pwd);
-		free(oldpwd);
+		write(2, "minishell: exit: numeric argument required\n", 43);
+		shell->exit_code = 2;
+		*arg = 1;
+		return (1);
 	}
-	ft_setenv(shell, "PWD", path);
+	return (0);
+}
+
+int	ft_exit(t_shell *shell, t_command *cmd)
+{
+	int	i;
+	int	num_arg_error_found;
+
+	num_arg_error_found = 0;
+	write(2, "exit\n", 5);
+	if (cmd->argc > 2)
+	{
+		write(2, "minishell: exit: too many arguments\n", 36);
+		shell->exit_code = 1;
+	}
+	else if (cmd->argc == 2)
+	{
+		i = 0;
+		while (cmd->argv[1][i])
+			if (check_exit_arg(&num_arg_error_found, shell, cmd, &i))
+				break ;
+		if (!num_arg_error_found)
+			shell->exit_code = ft_atoi(cmd->argv[1]);
+	}
+	else
+		shell->exit_code = 0;
+	free(shell->command);
+	clean_shell(shell);
+	_exit(shell->exit_code);
 }

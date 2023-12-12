@@ -100,15 +100,12 @@ void	get_envp_path(t_shell *shell, char ***path);
 int		check_file(char *absolute, char ***path, char **copy);
 char	*get_abs_path(t_shell *shell, char *command);
 void	clean_abs_path(char **absolute, char ***path, char **copy);
-char	*set_new_path(t_shell *shell, char *str);
 
 /*path2*/
 char	*build_abs_path(char *path, char *command);
 void	expand_cmd_cycle(char **copy, char *curpath, int *i, int *j);
 void	expand_command(t_shell *shell, char *command, char **copy);
 void	free_path(char **path);
-void	build_path(char **splitted, int i, char *path);
-char	*build_new_path(char *curpath, char *str);
 
 /*debug*/
 void		test_parser(t_shell *shell);
@@ -145,12 +142,20 @@ int			other_builtins(t_shell *shell, t_command *cmd);
 int			ft_export(t_shell *shell, t_command *cmd);
 int			export_core(t_shell *shell, t_command *cmd);
 int			export_checker(t_command *cmd, int i);
-int			ft_unset(t_shell *shell, t_command *cmd);
-int			ft_cd(t_shell *shell, t_command *cmd);
+int			print_export_entry(t_shell *shell);
 
 /* builtins3 */
-int			print_export_entry(t_shell *shell);
-int			ft_exit(t_shell *shell);
+int			ft_unset(t_shell *shell, t_command *cmd);
+int			find_var_index(t_shell *shell, char *key);
+char		**create_new_envp(t_shell *shell, int var_index);
+int			ft_exit(t_shell *shell, t_command *cmd);
+int			check_exit_arg(int *arg, t_shell *shell, t_command *cmd, int *i);
+
+/* builtins4 */
+int			ft_cd(t_shell *shell, t_command *cmd);
+char		*set_new_path(t_shell *shell, char *str);
+char		*build_new_path(char *curpath, char *str);
+void		build_path(char **splitted, int i, char *path);
 void		update_pwd(t_shell *shell, char *path);
 
 /* executor_utils1*/
@@ -203,7 +208,7 @@ void		copy_tmp_arg(t_command *cmd);
 
 /*utils2*/
 void		exec_command(t_shell *shell);
-char	*ft_strndup(const char *s, size_t n);
-void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+char		*ft_strndup(const char *s, size_t n);
+void		*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
 #endif

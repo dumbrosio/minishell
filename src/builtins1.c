@@ -12,11 +12,11 @@ int	ft_echo(t_command *cmd)
 		write(1, "\n", 1);
 		return (0);
 	}
-	if (ft_strncmp("-n", cmd->argv[i], 2) == 0)
-		is_n = i++;
-	if (is_n)
-		while (ft_strncmp("-n", cmd->argv[i], 2) == 0)
-			i++;
+	while (i < cmd->argc && ft_strncmp("-n", cmd->argv[i], 2) == 0)
+	{
+		is_n = 1;
+		i++;
+	}
 	while (i < cmd->argc)
 	{
 		write(1, cmd->argv[i], ft_strlen(cmd->argv[i]));
@@ -40,7 +40,13 @@ int	ft_env(t_shell *shell)
 
 int	ft_pwd(t_shell *shell)
 {
-	printf("%s\n", ft_getenv(shell, "PWD"));
+	char	*pwd;
+
+	pwd = ft_getenv(shell, "PWD");
+	if (pwd)
+		printf("%s\n", pwd);
+	else
+		printf("minishell: PWD not set\n");
 	return (0);
 }
 
@@ -57,7 +63,6 @@ int	is_builtin(t_command *cmd)
 
 int	exec_builtin(t_shell *shell, t_command *cmd)
 {
-	(void)shell;
 	if (ft_strcmp(cmd->argv[0], "echo") == 0)
 		return (ft_echo(cmd));
 	else if (ft_strcmp(cmd->argv[0], "env") == 0)
