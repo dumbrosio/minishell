@@ -144,6 +144,7 @@ int			exec_builtin(t_shell *shell, t_command *cmd);
 int			other_builtins(t_shell *shell, t_command *cmd);
 int			ft_export(t_shell *shell, t_command *cmd);
 int			export_core(t_shell *shell, t_command *cmd);
+int			export_checker(t_command *cmd, int i);
 int			ft_unset(t_shell *shell, t_command *cmd);
 int			ft_cd(t_shell *shell, t_command *cmd);
 
@@ -179,6 +180,7 @@ int			pop_env_entry(char ***env, char *key);
 /* env2*/
 void		ft_add_entry(char ***env, char *entry);
 int			ft_setenv(t_shell *shell, char *key, char *value);
+void			ft_setenv_export(t_shell *shell, char *key, char *value);
 int			ft_setenv_entry(char *token, t_entry *entry);
 void		clean_entry(t_entry *entry);
 void		strcat_union(char *str, char *key, char *value);
@@ -201,6 +203,7 @@ void		copy_tmp_arg(t_command *cmd);
 
 /*utils2*/
 void		exec_command(t_shell *shell);
-
+char	*ft_strndup(const char *s, size_t n);
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
 #endif

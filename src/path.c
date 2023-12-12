@@ -28,6 +28,16 @@ int	check_file(char *absolute, char ***path, char **copy)
 	}
 	return (0);
 }
+char** handle_null_path(char **path, char *copy)
+{
+	if (path == NULL)
+	{
+		free(copy);
+		return (NULL);
+	}
+	return path;
+}
+
 
 char	*get_abs_path(t_shell *shell, char *command)
 {
@@ -38,6 +48,7 @@ char	*get_abs_path(t_shell *shell, char *command)
 
 	expand_command(shell, command, &copy);
 	get_envp_path(shell, &path);
+	path = handle_null_path(path, copy);
 	if (path == NULL)
 		return (NULL);
 	if (copy[0] == '/')
@@ -61,6 +72,7 @@ void	clean_abs_path(char **absolute, char ***path, char **copy)
 		free(*absolute);
 	free_path(*path);
 	free(*copy);
+	*copy = NULL;
 }
 
 char	*set_new_path(t_shell *shell, char *str)
