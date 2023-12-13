@@ -8,22 +8,27 @@ int	ft_cd(t_shell *shell, t_command *cmd)
 	{
 		path = ft_strdup(ft_getenv(shell, "HOME"));
 		if (path == NULL)
-			path = ft_strdup(ft_getenv(shell, "PWD"));
+		{
+			print_error("Minishell: cd: HOME not set");
+			shell->exit_code = 1;
+			return (0);
+		}
 	}
 	else
-		path = set_new_path(shell, cmd->argv[1]);
+		path = set_new_path_cd(shell, cmd->argv[1]);
 	if (chdir(path) == -1)
 	{
 		perror(cmd->argv[1]);
+		shell->exit_code = 1;
 		free(path);
 		return (1);
 	}
-	update_pwd(shell, path);
+	update_pwd_cd(shell, path);
 	free(path);
 	return (0);
 }
 
-void update_pwd(t_shell *shell, char *path)
+void	update_pwd_cd(t_shell *shell, char *path)
 {
 	char	*pwd;
 	char	*oldpwd;
@@ -32,21 +37,21 @@ void update_pwd(t_shell *shell, char *path)
 	currentpwd = ft_getenv(shell, "PWD");
 	oldpwd = ft_getenv(shell, "OLDPWD");
 	if (oldpwd && *oldpwd && currentpwd && *currentpwd)
-		ft_setenv(shell, "OLDPWD", currentpwd);
+		ft_setenv_export(shell, "OLDPWD", currentpwd);
 	else
 	{
 		if (currentpwd)
 		{
 			pwd = ft_strdup(currentpwd);
-			ft_setenv(shell, "OLDPWD", pwd);
+			ft_setenv_export(shell, "OLDPWD", pwd);
 			free(pwd);
 		}
 	}
 	if (path)
-		ft_setenv(shell, "PWD", path);
+		ft_setenv_export(shell, "PWD", path);
 }
 
-char	*set_new_path(t_shell *shell, char *str)
+char	*set_new_path_cd(t_shell *shell, char *str)
 {
 	char	path[4096];
 
@@ -58,10 +63,10 @@ char	*set_new_path(t_shell *shell, char *str)
 		str[ft_strlen(str) - 1] = 0;
 	while (str[0] == '/')
 		str++;
-	return (build_new_path(path, str));
+	return (build_new_path_cd(path, str));
 }
 
-char	*build_new_path(char *curpath, char *str)
+char	*build_new_path_cd(char *curpath, char *str)
 {
 	char	path[4096];
 	char	**splitted;
@@ -70,12 +75,12 @@ char	*build_new_path(char *curpath, char *str)
 	ft_strcpy(path, curpath);
 	splitted = ft_split(str, '/');
 	i = 0;
-	build_path(splitted, i, path);
+	build_path_cd(splitted, i, path);
 	clean_split(splitted);
 	return (ft_strdup(path));
 }
 
-void	build_path(char **splitted, int i, char *path)
+void	build_path_cd(char **splitted, int i, char *path)
 {
 	while (splitted[i])
 	{

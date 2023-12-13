@@ -1,3 +1,4 @@
+
 #include "minishell.h"
 
 int		g_var;
@@ -10,8 +11,8 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->command_pos = 0;
 	shell->main_pid = getpid();
 	shell->exit_code = 0;
-	shell->localenvp = (char **)malloc(sizeof(char *));
-	shell->localenvp[0] = NULL;
+	//shell->localenvp = (char **)malloc(sizeof(char *));
+	//shell->localenvp[0] = NULL;
 	shell->expand = 1;
 	shell->token_error = 1;
 }
@@ -30,7 +31,8 @@ void	run_shell(t_shell *shell)
 			shell->exit_code = g_var;
 			g_var = 0;
 		}
-		add_history(command);
+		if (add_to_rl(command))
+			add_history(command);
 		split_command = ft_quote_split(command, ";", "'\"");
 		i = 0;
 		while (split_command[i])
@@ -53,7 +55,7 @@ void	exec_command(t_shell *shell)
 	term = command(shell, &pid, 0, NULL);
 	if (term == T_ERROR)
 	{
-		shell->exit_code = 1;
+		shell->exit_code = 2;
 		print_error("Bad command");
 		term = T_NL;
 	}
@@ -66,7 +68,7 @@ void	clean_shell(t_shell *shell)
 	free(shell->prompt);
 	free(shell->buffer);
 	clean_split(shell->envp);
-	clean_split(shell->localenvp);
+	// clean_split(shell->localenvp);
 	if (access("/tmp/ms_tmp", F_OK) == 0)
 		unlink("/tmp/ms_tmp");
 }
@@ -75,11 +77,10 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
 
-	(void)argv;
-	if (argc > 1)
+	if (argc != 1)
 	{
-			printf("Usage:\n./minishell\n");
-			return (1);
+		printf("minishell: %s: No such file or directory\n", argv[1]);
+		return (1);
 	}
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, signal_handler);

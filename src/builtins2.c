@@ -63,7 +63,8 @@ int	print_export_entry(t_shell *shell)
 
 int	export_checker(t_command *cmd, int i)
 {
-	if (cmd->argv[i][0] == '=' || cmd->argv[i][0] == '/'|| cmd->argv[i][0] == '-' || ft_isdigit((unsigned char)cmd->argv[i][0]))
+	if (cmd->argv[i][0] == '=' || cmd->argv[i][0] == '/' || \
+	cmd->argv[i][0] == '-' || ft_isdigit((unsigned char)cmd->argv[i][0]))
 		return (1);
 	return (0);
 }
@@ -81,7 +82,7 @@ int	export_core(t_shell *shell, t_command *cmd)
 		if (export_checker(cmd, i))
 		{
 			i++;
-			continue;
+			continue ;
 		}
 		equal_sign = ft_strchr(cmd->argv[i], '=');
 		if (equal_sign)

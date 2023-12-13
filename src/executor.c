@@ -33,8 +33,7 @@ int	cmd_special(t_shell *shell, t_command *cmd)
 	{
 		if (cmd->dstfd != STDOUT_FILENO)
 		{
-			print_error("Piping error.");
-			shell->exit_code = 2;
+			print_error_2(shell, "Piping error");
 			return (1);
 		}
 		cmd->term = command(shell, cmd->wpid, 1, &cmd->dstfd);
@@ -49,7 +48,7 @@ int	cmd_special(t_shell *shell, t_command *cmd)
 	if (cmd->tk != T_PIPE)
 		*cmd->wpid = cmd->pid;
 	if (cmd->argc == 0 && (cmd->tk != T_NL || cmd->srcfd > 1))
-		print_error("Missing command");
+		print_error_2(shell, "Syntax error");
 	free_command_args(cmd);
 	return (0);
 }

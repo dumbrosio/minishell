@@ -28,6 +28,13 @@ void	print_error(char *str)
 	write(STDERR_FILENO, "\n", 1);
 }
 
+void	print_error_2(t_shell *shell, char *str)
+{
+	write(STDERR_FILENO, str, ft_strlen(str));
+	write(STDERR_FILENO, "\n", 1);
+	shell->exit_code = 2;
+}
+
 void	clean_split(char **split)
 {
 	int	i;
@@ -43,8 +50,8 @@ void	clean_split(char **split)
 int	write_error(t_shell *shell)
 {
 	write(2, "minishell: ", 11);
-	write(2, "errore di sintassi vicino al token non atteso \"", 47);
+	write(2, "syntax error near unexpected token", 35);
 	write(2, shell->buffer, ft_strlen(shell->buffer));
-	write(2, "\"\n", 2);
+	write(2, "\n", 2);
 	return (1);
 }

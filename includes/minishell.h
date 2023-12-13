@@ -90,25 +90,23 @@ typedef struct s_entry
 }			t_entry;
 
 /* minishell */
-void		clean_shell(t_shell *shell);
 void		init_shell(t_shell *shell, char **envp);
 void		run_shell(t_shell *shell);
-void		signal_handler(int sig);
+void		exec_command(t_shell *shell);
+void		clean_shell(t_shell *shell);
 
 /*path1*/
-void	get_envp_path(t_shell *shell, char ***path);
-int		check_file(char *absolute, char ***path, char **copy);
-char	*get_abs_path(t_shell *shell, char *command);
-void	clean_abs_path(char **absolute, char ***path, char **copy);
+void		get_envp_path(t_shell *shell, char ***path);
+int			check_file(char *absolute, char ***path, char **copy);
+char**		handle_null_path(char **path, char *copy);
+char		*get_abs_path(t_shell *shell, char *command);
+void		clean_abs_path(char **absolute, char ***path, char **copy);
 
 /*path2*/
-char	*build_abs_path(char *path, char *command);
-void	expand_cmd_cycle(char **copy, char *curpath, int *i, int *j);
-void	expand_command(t_shell *shell, char *command, char **copy);
-void	free_path(char **path);
-
-/*debug*/
-void		test_parser(t_shell *shell);
+char		*build_abs_path(char *path, char *command);
+void		expand_cmd_cycle(char **copy, char *curpath, int *i, int *j);
+void		expand_command(t_shell *shell, char *command, char **copy);
+void		free_path(char **path);
 
 /*parser*/
 void		init_token(t_shell *shell, t_pstatus *state, t_token *token, int *c);
@@ -140,9 +138,9 @@ int			exec_builtin(t_shell *shell, t_command *cmd);
 /* builtins2 */
 int			other_builtins(t_shell *shell, t_command *cmd);
 int			ft_export(t_shell *shell, t_command *cmd);
-int			export_core(t_shell *shell, t_command *cmd);
-int			export_checker(t_command *cmd, int i);
 int			print_export_entry(t_shell *shell);
+int			export_checker(t_command *cmd, int i);
+int			export_core(t_shell *shell, t_command *cmd);
 
 /* builtins3 */
 int			ft_unset(t_shell *shell, t_command *cmd);
@@ -153,10 +151,10 @@ int			check_exit_arg(int *arg, t_shell *shell, t_command *cmd, int *i);
 
 /* builtins4 */
 int			ft_cd(t_shell *shell, t_command *cmd);
-char		*set_new_path(t_shell *shell, char *str);
-char		*build_new_path(char *curpath, char *str);
-void		build_path(char **splitted, int i, char *path);
-void		update_pwd(t_shell *shell, char *path);
+char		*set_new_path_cd(t_shell *shell, char *str);
+char		*build_new_path_cd(char *curpath, char *str);
+void		build_path_cd(char **splitted, int i, char *path);
+void		update_pwd_cd(t_shell *shell, char *path);
 
 /* executor_utils1*/
 int			set_red_in(t_shell *shell, t_command *cmd);
@@ -195,6 +193,7 @@ char		**copy_environment(char **env);
 void		clean_split(char **split);
 void		print_error(char *str);
 int			write_error(t_shell *shell);
+void		print_error_2(t_shell *shell, char *str);
 
 /*expander*/
 void		expand(t_shell *shell);
@@ -207,8 +206,9 @@ int			set_heredoc(t_shell *shell, t_command *cmd);
 void		copy_tmp_arg(t_command *cmd);
 
 /*utils2*/
-void		exec_command(t_shell *shell);
+void		signal_handler(int sig);
 char		*ft_strndup(const char *s, size_t n);
 void		*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+int			add_to_rl(char *cmd);
 
 #endif

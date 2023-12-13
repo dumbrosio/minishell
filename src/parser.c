@@ -45,7 +45,6 @@ void	parse_quote(t_shell *shell, t_token *token, int c)
 		*token = T_ERROR;
 }
 
-
 void	init_token(t_shell *shell, t_pstatus *state, t_token *token, int *c)
 {
 	shell->buffer_pos = 0;

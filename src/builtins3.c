@@ -15,10 +15,9 @@ int	ft_unset(t_shell *shell, t_command *cmd)
 			arg++;
 			continue ;
 		}
-		 new_envp = create_new_envp(shell, var_index);
+		new_envp = create_new_envp(shell, var_index);
 		if (new_envp == NULL)
 			return (1);
-
 		free(shell->envp[var_index]);
 		free(shell->envp);
 		shell->envp = new_envp;
@@ -29,18 +28,21 @@ int	ft_unset(t_shell *shell, t_command *cmd)
 
 int	find_var_index(t_shell *shell, char *key)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	while (shell->envp[i] != NULL)
 	{
-		if (ft_strncmp(shell->envp[i], key, ft_strlen(key)) == 0 && shell->envp[i][ft_strlen(key)] == '=')
+		if (ft_strncmp(shell->envp[i], key, ft_strlen(key)) == 0 && \
+		shell->envp[i][ft_strlen(key)] == '=')
 		{
-			return i;
+			return (i);
 		}
 		i++;
 	}
 	return (-1);
 }
+
 char	**create_new_envp(t_shell *shell, int var_index)
 {
 	int		i;
@@ -66,7 +68,7 @@ char	**create_new_envp(t_shell *shell, int var_index)
 		i++;
 	}
 	new_envp[j] = NULL;
-	return new_envp;
+	return (new_envp);
 }
 
 int	check_exit_arg(int *arg, t_shell *shell, t_command *cmd, int *i)
