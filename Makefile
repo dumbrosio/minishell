@@ -9,7 +9,7 @@ RMDIR		:= rm -rf
 LIBFT_NAME	:= libft.a
 LIBFT_DIR	:= ./libft/
 LIBFT		:= $(addprefix $(LIBFT_DIR), $(LIBFT_NAME))
-SRC_FILES	:= minishell parser parser_utils path1 path2 utils1 utils2 utils3 executor executor_utils1 executor_utils2 expander executor_utils3 env1 builtins1 builtins2 builtins3 builtins4 builtins5 heredoc
+SRC_FILES	:= minishell builtins/builtins1 builtins/builtins2 builtins/builtins3 builtins/builtins4 builtins/builtins5 builtins/heredoc env/environment env/expander env/path1 env/path2 executor/executor_utils1 executor/executor_utils2 executor/executor_utils3 executor/executor parser/parser_utils parser/parser utils/utils1 utils/utils2 utils/utils3 
 SRC_DIR		:= ./src/
 SRCS		:= $(addsuffix .c, $(addprefix $(SRC_DIR), $(SRC_FILES)))
 OBJ_DIR		:= ./.obj/
@@ -32,7 +32,7 @@ $(NAME): $(OBJS) $(LIBFT)
 	@echo "$(ERASE)$(GREEN)$(NAME) made$(END)"
 
 $(OBJ_DIR)%o: $(SRC_DIR)%c
-	$(MKDIR) $(OBJ_DIR)
+	$(MKDIR) $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES) $(LIBRARIES) $(DEBUG)
 	@echo "$(ERASE)$(BLUE)> Compilation :$(END) $<"
 
