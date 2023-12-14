@@ -36,6 +36,7 @@ int	print_export_entry(t_shell *shell)
 
 	i = 0;
 	copied_envp = shell->envp;
+	bubble_sort(copied_envp, ft_envp_len(copied_envp));
 	while (copied_envp[i] != NULL )
 	{
 		env_var = ft_strdup(copied_envp[i]);
