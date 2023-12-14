@@ -52,7 +52,7 @@ void	exec_command(t_shell *shell)
 	term = command(shell, &pid, 0, NULL);
 	if (term == T_ERROR)
 	{
-		print_error_2(shell, "Sintax error");
+		print_error_2(shell, "Syntax error");
 		term = T_NL;
 	}
 	else if (pid > 0)
