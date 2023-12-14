@@ -15,7 +15,7 @@ void	add_last_exit(t_shell *shell, int *i, int *j)
 	len = 0;
 	while (value[len])
 		len++;
-	 if (*i + len < ft_strlen(buffer))
+	if (*i + len < ft_strlen(buffer))
 		(*i) += len;
 	ft_memcpy(buffer + *j, value, ft_strlen(value));
 	(*j) += ft_strlen(value);

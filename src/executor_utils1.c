@@ -47,7 +47,7 @@ void	add_word_token(t_shell *shell, t_command *cmd)
 {
 	if (cmd->argc >= MAXARG - 1)
 	{
-		print_error("Too args");
+		print_error("Too many args");
 		return ;
 	}
 	if (shell->expand)
@@ -66,7 +66,7 @@ int	set_red_in(t_shell *shell, t_command *cmd)
 
 	buffer[0] = 0;
 	if (get_token(shell, cmd) != T_WORD)
-		return (write_error(shell));
+		return (write_error(shell, "<"));
 	if (shell->expand)
 		expand(shell);
 	if (shell->buffer[0] != '/')
@@ -90,7 +90,12 @@ int	set_red_out(t_shell *shell, t_command *cmd)
 	int	flags;
 
 	if (get_token(shell, cmd) != T_WORD)
-		return (write_error(shell));
+	{
+		if (cmd->tk == T_GREAT)
+			return (write_error(shell, ">"));
+		else if (cmd->tk == T_APPEND)
+			return (write_error(shell, ">>"));
+	}
 	if (shell->expand)
 		expand(shell);
 	flags = O_CREAT;

@@ -25,42 +25,6 @@ int	other_builtins(t_shell *shell, t_command *cmd)
 	return (0);
 }
 
-int	ft_export(t_shell *shell, t_command *cmd)
-{
-	if (cmd->argc == 1)
-		print_export_entry(shell);
-	else
-		export_core(shell, cmd);
-	return (0);
-}
-
-int	print_export_entry(t_shell *shell)
-{
-	int		i;
-	char	**copied_envp;
-	char	*env_var;
-	char	*key;
-	char	*value;
-
-	i = 0;
-	copied_envp = shell->envp;
-	while (copied_envp[i] != NULL )
-	{
-		env_var = ft_strdup(copied_envp[i]);
-		key = env_var;
-		value = ft_strchr(key, '=');
-		if (value != NULL)
-		{
-			*value = '\0';
-			value++;
-			printf("declare -x %s=\"%s\"\n", key, value);
-		}
-		i++;
-		free(env_var);
-	}
-	return (1);
-}
-
 int	export_checker(t_command *cmd, int i)
 {
 	if (cmd->argv[i][0] == '=' || cmd->argv[i][0] == '/' || \
@@ -69,31 +33,20 @@ int	export_checker(t_command *cmd, int i)
 	return (0);
 }
 
-int	export_core(t_shell *shell, t_command *cmd)
+void	export_error(t_shell *shell, char *key, int *i)
 {
-	int		i;
-	char	*key;
-	char	*value;
-	char	*equal_sign;
+	write(2, "minishell: export: '", 20);
+	write(2, key, ft_strlen(key));
+	write(2, "': not a valid identifier\n", 26);
+	shell->exit_code = 1;
+	(*i)++;
+}
 
-	i = 1;
-	while (i < cmd->argc)
-	{
-		if (export_checker(cmd, i))
-		{
-			i++;
-			continue ;
-		}
-		equal_sign = ft_strchr(cmd->argv[i], '=');
-		if (equal_sign)
-		{
-			*equal_sign = '\0';
-			key = cmd->argv[i];
-			value = equal_sign + 1;
-			ft_setenv_export(shell, key, value);
-			*equal_sign = '=';
-		}
-		i++;
-	}
-	return (0);
+void	cd_write_error(t_shell *shell, char *arg)
+{
+	write(2, "minishell: cd: ", 15);
+	write(2, arg, strlen(arg));
+	write(2, ": No such file or directory", 28);
+	write(2, "\n", 2);
+	shell->exit_code = 1;
 }

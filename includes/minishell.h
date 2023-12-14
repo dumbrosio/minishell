@@ -12,7 +12,9 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <limits.h>
 
+# define PATH_MAX 4096
 # define BUFFERSIZE 4096
 # define MAXARG 50    /* max args in cmd */
 # define MAXFNAME 500 /* max chars in file name */
@@ -137,10 +139,16 @@ int			exec_builtin(t_shell *shell, t_command *cmd);
 
 /* builtins2 */
 int			other_builtins(t_shell *shell, t_command *cmd);
+void		export_error(t_shell *shell, char *key, int *i);
+int			export_checker(t_command *cmd, int i);
+void		cd_write_error(t_shell *shell, char *arg);
+
+/* builtins5 */
 int			ft_export(t_shell *shell, t_command *cmd);
 int			print_export_entry(t_shell *shell);
-int			export_checker(t_command *cmd, int i);
 int			export_core(t_shell *shell, t_command *cmd);
+void		print_export_var(char *env_var);
+void 		handle_export_arg(t_shell *shell, char *arg);
 
 /* builtins3 */
 int			ft_unset(t_shell *shell, t_command *cmd);
@@ -178,21 +186,14 @@ void		set_file(t_command *cmd);
 /* env1*/
 char		**ft_getenv_entry(char **env, char *key);
 char		*ft_getenv(t_shell *shell, char *key);
-int			pop_env_entry(char ***env, char *key);
-
-/* env2*/
-void		ft_add_entry(char ***env, char *entry);
-int			ft_setenv(t_shell *shell, char *key, char *value);
-void			ft_setenv_export(t_shell *shell, char *key, char *value);
-int			ft_setenv_entry(char *token, t_entry *entry);
-void		clean_entry(t_entry *entry);
-void		strcat_union(char *str, char *key, char *value);
+char		*create_env_entry(char *key, char *value);
+void		ft_setenv(t_shell *shell, char *key, char *value);
 
 /*utils1*/
 char		**copy_environment(char **env);
 void		clean_split(char **split);
 void		print_error(char *str);
-int			write_error(t_shell *shell);
+int			write_error(t_shell *shell, char *token);
 void		print_error_2(t_shell *shell, char *str);
 
 /*expander*/

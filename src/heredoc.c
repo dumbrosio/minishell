@@ -7,7 +7,7 @@ int	set_heredoc(t_shell *shell, t_command *cmd)
 	int		tmp_file;
 
 	if (get_token(shell, cmd) != T_WORD)
-		return (write_error(shell));
+		return (write_error(shell, "<<"));
 	if (shell->expand)
 		expand(shell);
 	tmp_file = open("/tmp/ms_tmp", O_CREAT | O_TRUNC | O_RDWR, 0600);

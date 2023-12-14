@@ -10,7 +10,6 @@ int	ft_cd(t_shell *shell, t_command *cmd)
 		if (path == NULL)
 		{
 			print_error("Minishell: cd: HOME not set");
-			shell->exit_code = 1;
 			return (0);
 		}
 	}
@@ -18,8 +17,7 @@ int	ft_cd(t_shell *shell, t_command *cmd)
 		path = set_new_path_cd(shell, cmd->argv[1]);
 	if (chdir(path) == -1)
 	{
-		perror(cmd->argv[1]);
-		shell->exit_code = 1;
+		cd_write_error(shell, cmd->argv[1]);
 		free(path);
 		return (1);
 	}
@@ -37,18 +35,18 @@ void	update_pwd_cd(t_shell *shell, char *path)
 	currentpwd = ft_getenv(shell, "PWD");
 	oldpwd = ft_getenv(shell, "OLDPWD");
 	if (oldpwd && *oldpwd && currentpwd && *currentpwd)
-		ft_setenv_export(shell, "OLDPWD", currentpwd);
+		ft_setenv(shell, "OLDPWD", currentpwd);
 	else
 	{
 		if (currentpwd)
 		{
 			pwd = ft_strdup(currentpwd);
-			ft_setenv_export(shell, "OLDPWD", pwd);
+			ft_setenv(shell, "OLDPWD", pwd);
 			free(pwd);
 		}
 	}
 	if (path)
-		ft_setenv_export(shell, "PWD", path);
+		ft_setenv(shell, "PWD", path);
 }
 
 char	*set_new_path_cd(t_shell *shell, char *str)

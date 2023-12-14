@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 int		g_var;
@@ -11,8 +10,6 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->command_pos = 0;
 	shell->main_pid = getpid();
 	shell->exit_code = 0;
-	//shell->localenvp = (char **)malloc(sizeof(char *));
-	//shell->localenvp[0] = NULL;
 	shell->expand = 1;
 	shell->token_error = 1;
 }
@@ -55,8 +52,7 @@ void	exec_command(t_shell *shell)
 	term = command(shell, &pid, 0, NULL);
 	if (term == T_ERROR)
 	{
-		shell->exit_code = 2;
-		print_error("Bad command");
+		print_error_2(shell, "Sintax error");
 		term = T_NL;
 	}
 	else if (pid > 0)
@@ -68,7 +64,6 @@ void	clean_shell(t_shell *shell)
 	free(shell->prompt);
 	free(shell->buffer);
 	clean_split(shell->envp);
-	// clean_split(shell->localenvp);
 	if (access("/tmp/ms_tmp", F_OK) == 0)
 		unlink("/tmp/ms_tmp");
 }

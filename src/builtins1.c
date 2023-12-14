@@ -30,23 +30,37 @@ int	ft_echo(t_command *cmd)
 
 int	ft_env(t_shell *shell)
 {
-	int	i;
+	int		i;
+	char	*equal_sign;
 
 	i = 0;
 	while (shell->envp[i])
-		printf("%s\n", shell->envp[i++]);
+	{
+		equal_sign = ft_strchr(shell->envp[i], '=');
+		if (equal_sign)
+		{
+			printf("%s\n", shell->envp[i]);
+		}
+		i++;
+	}
 	return (0);
 }
 
 int	ft_pwd(t_shell *shell)
 {
-	char	*pwd;
+	char	pwd[PATH_MAX];
 
-	pwd = ft_getenv(shell, "PWD");
-	if (pwd)
-		printf("%s\n", pwd);
+	(void)shell;
+	if (getcwd(pwd, sizeof(pwd)) != NULL)
+	{
+		write(1, pwd, strlen(pwd));
+		write(1, "\n", 1);
+	}
 	else
-		printf("minishell: PWD not set\n");
+	{
+		perror("getcwd() error");
+		return (1);
+	}
 	return (0);
 }
 

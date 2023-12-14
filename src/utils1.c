@@ -47,11 +47,24 @@ void	clean_split(char **split)
 	free(split);
 }
 
-int	write_error(t_shell *shell)
+int	write_error(t_shell *shell, char *token)
 {
+	(void)shell;
 	write(2, "minishell: ", 11);
-	write(2, "syntax error near unexpected token", 35);
-	write(2, shell->buffer, ft_strlen(shell->buffer));
-	write(2, "\n", 2);
+	write(2, "syntax error near unexpected token '", 35);
+	write(2, token, strlen(token));
+	write(2, "'\n", 2);
 	return (1);
 }
+// int	write_error(t_shell *shell, char *token)
+// {
+// 	(void)shell;
+// 	write(2, "minishell: ", 11);
+// 	write(2, "syntax error near unexpected token '", 35);
+// 	if (shell->buffer[0] == '\0')
+// 		write(2, "newline", 7);
+// 	else
+// 		write(2, token, strlen(token));
+// 	write(2, "'\n", 2);
+// 	return (1);
+// }
