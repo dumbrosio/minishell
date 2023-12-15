@@ -30,7 +30,7 @@ void	run_shell(t_shell *shell)
 		}
 		if (add_to_rl(command))
 			add_history(command);
-		split_command = ft_quote_split(command, ";", "'\"");
+		split_command = ft_split(command, ';');
 		i = 0;
 		while (split_command[i])
 		{

@@ -25,7 +25,6 @@ extern int	g_var;
 typedef struct s_shell
 {
 	char	**envp;
-	char	**localenvp;
 	char	*buffer;
 	char	*command;
 	char	*path_cmd;
@@ -83,13 +82,6 @@ typedef struct s_command
 	t_token	tk;
 	char	tmp_arg[MAXWORD];
 }			t_command;
-
-typedef struct s_entry
-{
-	char	*entry;
-	char	*key;
-	char	*value;
-}			t_entry;
 
 /* minishell */
 void	init_shell(t_shell *shell, char **envp);
@@ -150,15 +142,20 @@ void	add_expanded_value(t_shell *shell, char *buffer_copy, int *i, int *j);
 /*path1*/
 void	get_envp_path(t_shell *shell, char ***path);
 int		check_file(char *absolute, char ***path, char **copy);
-char	**handle_null_path(char **path, char *copy);
 char	*get_abs_path(t_shell *shell, char *command);
-void	clean_abs_path(char **absolute, char ***path, char **copy);
+char	*handle_absolute_path(char *copy);
+char	*handle_relative_path(t_shell *shell, char *copy);
 
 /*path2*/
 char	*build_abs_path(char *path, char *command);
 void	expand_cmd_cycle(char **copy, char *curpath, int *i, int *j);
 void	expand_command(t_shell *shell, char *command, char **copy);
 void	free_path(char **path);
+
+/*path3*/
+void	clean_abs_path(char **absolute, char ***path, char **copy);
+char	**handle_null_path(char **path, char *copy);
+
 
 /* executor_utils1*/
 int		set_red_in(t_shell *shell, t_command *cmd);
