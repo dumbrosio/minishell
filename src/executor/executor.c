@@ -35,6 +35,7 @@ int	cmd_special(t_shell *shell, t_command *cmd)
 		if (cmd->dstfd != STDOUT_FILENO)
 		{
 			print_error_2(shell, "Piping error");
+			free_command_args(cmd);
 			return (1);
 		}
 		cmd->term = command(shell, cmd->wpid, 1, &cmd->dstfd);
