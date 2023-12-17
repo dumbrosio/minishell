@@ -21,6 +21,7 @@ t_token	command(t_shell *shell, pid_t *wpid, int makepipe, int *pipefdp)
 				break ;
 			return (cmd.term);
 		}
+		free_command_args(&cmd);
 		return (T_ERROR);
 	}
 	return (T_ERROR);
