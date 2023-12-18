@@ -156,7 +156,6 @@ void	free_path(char **path);
 void	clean_abs_path(char **absolute, char ***path, char **copy);
 char	**handle_null_path(char **path, char *copy);
 
-
 /* executor_utils1*/
 int		set_red_in(t_shell *shell, t_command *cmd);
 int		set_red_out(t_shell *shell, t_command *cmd);

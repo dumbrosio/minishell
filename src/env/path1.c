@@ -31,7 +31,7 @@ int	check_file(char *absolute, char ***path, char **copy)
 char	*handle_absolute_path(char *copy)
 {
 	if (access(copy, F_OK) == 0)
-		return copy;
+		return (copy);
 	else
 	{
 		free(copy);
@@ -49,29 +49,27 @@ char	*handle_relative_path(t_shell *shell, char *copy)
 	path = handle_null_path(path, copy);
 	if (path == NULL)
 		return (NULL);
-
 	runner = path;
-	while (runner && *runner) {
+	while (runner && *runner)
+	{
 		absolute = build_abs_path(*runner, copy);
 		if (check_file(absolute, &path, &copy))
-			return absolute;
+			return (absolute);
 		free(absolute);
 		absolute = NULL;
 		runner++;
 	}
-
 	clean_abs_path(&absolute, &path, &copy);
 	return (NULL);
 }
 
 char	*get_abs_path(t_shell *shell, char *command)
 {
-	char *copy;
+	char	*copy;
 
 	expand_command(shell, command, &copy);
 	if (copy[0] == '/')
-		return handle_absolute_path(copy);
+		return (handle_absolute_path(copy));
 	else
-		return handle_relative_path(shell, copy);
+		return (handle_relative_path(shell, copy));
 }
-
